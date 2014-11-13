@@ -17,6 +17,8 @@ import idv.cjcat.stardustextended.twoD.handlers.PixelHandler;
 import idv.cjcat.stardustextended.twoD.handlers.SingularBitmapHandler;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
+import starling.display.QuadBatch;
+
 /** Simple class to play back simulations. If you need something more custom write your own. */
 public class SimPlayer
 {
@@ -46,7 +48,7 @@ public class SimPlayer
             }
             else if (handler is StarlingHandler)
             {
-                StarlingHandler(handler).container = renderTarget;
+                StarlingHandler(handler).quadBatch = QuadBatch(renderTarget);
             }
         }
     }
