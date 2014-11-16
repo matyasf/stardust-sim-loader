@@ -13,6 +13,7 @@ import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 import idv.cjcat.stardustextended.common.handlers.ParticleHandler;
 import idv.cjcat.stardustextended.twoD.handlers.BitmapHandler;
 import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
+import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectSpriteSheetHandler;
 import idv.cjcat.stardustextended.twoD.handlers.PixelHandler;
 import idv.cjcat.stardustextended.twoD.handlers.SingularBitmapHandler;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
@@ -27,12 +28,21 @@ public class SimPlayer
     public function setSimulation( sim : ProjectValueObject, renderTarget : Object ) : void
     {
         _sim = sim;
-        for each (var emitterValueObject : EmitterValueObject in sim.emitters)
+        setRenderTarget(renderTarget);
+    }
+
+    public function setRenderTarget(renderTarget : Object) : void
+    {
+        for each (var emitterValueObject : EmitterValueObject in _sim.emitters)
         {
             const handler : ParticleHandler = emitterValueObject.emitter.particleHandler;
             if (handler is DisplayObjectHandler)
             {
-                DisplayObjectHandler(handler).container = DisplayObjectContainer(renderTarget);
+                DisplayObjectHandler(handler).container = flash.display.DisplayObjectContainer(renderTarget);
+            }
+            if (handler is DisplayObjectSpriteSheetHandler)
+            {
+                DisplayObjectSpriteSheetHandler(handler).container = flash.display.DisplayObjectContainer(renderTarget);
             }
             else if (handler is BitmapHandler)
             {
@@ -48,7 +58,10 @@ public class SimPlayer
             }
             else if (handler is StarlingHandler)
             {
-                StarlingHandler(handler).quadBatch = QuadBatch(renderTarget);
+                StarlingHandler(handler).container = starling.display.DisplayObjectContainer(renderTarget);
+            }
+            else {
+                throw new Error("Unknown particle handler " + handler);
             }
         }
     }

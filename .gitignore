@@ -2,3 +2,5 @@ target
 stardust-sim-player.iml
 .gradle/*
 build/*
+*.iml
+.idea/*

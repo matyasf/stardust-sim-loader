@@ -17,7 +17,6 @@ public class ProjectValueObject
     public var backgroundFileName : String;
     public var backgroundImage : DisplayObject;
     public var backgroundRawData : ByteArray;
-    public var displayMode : String;
 
     public function ProjectValueObject( projectJSON : Object )
     {
@@ -28,15 +27,6 @@ public class ProjectValueObject
         if ( projectJSON.backgroundFileName )
         {
             backgroundFileName = projectJSON.backgroundFileName;
-        }
-
-        if ( projectJSON.displayMode )
-        {
-            displayMode = projectJSON.displayMode;
-        }
-        else
-        {
-            displayMode = DisplayModes.DISPLAY_LIST;
         }
     }
 

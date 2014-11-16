@@ -14,7 +14,6 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.utils.ByteArray;
 import idv.cjcat.stardustextended.sd;
-import idv.cjcat.stardustextended.twoD.display.bitmapParticle.BitmapParticle;
 
 import org.as3commons.zip.Zip;
 
@@ -22,7 +21,6 @@ use namespace sd;
 
 public class SimLoader extends EventDispatcher implements ISimLoader
 {
-    private static const bitmapParticle : BitmapParticle = null; // this is needed here, so it can be instantiated
     public static const DESCRIPTOR_FILENAME : String = "descriptor.json";
     private static const BACKGROUND_JOB_ID : String = "backgroundID";
     private const sequenceLoader : ISequenceLoader = new SequenceLoader();
