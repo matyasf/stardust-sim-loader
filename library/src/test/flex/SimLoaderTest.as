@@ -3,7 +3,7 @@ package
 import com.plumbee.stardustplayer.SimLoader;
 import com.plumbee.stardustplayer.ZipFileNames;
 import com.plumbee.stardustplayer.emitter.EmitterValueObject;
-import com.plumbee.stardustplayer.project.DisplayModes;
+import com.plumbee.stardust.model.DisplayModes;
 import com.plumbee.stardustplayer.project.ProjectValueObject;
 
 import flash.display.BlendMode;
