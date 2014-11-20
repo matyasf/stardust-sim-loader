@@ -38,11 +38,11 @@ public class SimPlayer
             const handler : ParticleHandler = emitterValueObject.emitter.particleHandler;
             if (handler is DisplayObjectHandler)
             {
-                DisplayObjectHandler(handler).container = flash.display.DisplayObjectContainer(renderTarget);
+                DisplayObjectHandler(handler).container = renderTarget as DisplayObjectContainer;
             }
             if (handler is DisplayObjectSpriteSheetHandler)
             {
-                DisplayObjectSpriteSheetHandler(handler).container = flash.display.DisplayObjectContainer(renderTarget);
+                DisplayObjectSpriteSheetHandler(handler).container = renderTarget as DisplayObjectContainer;
             }
             else if (handler is BitmapHandler)
             {
@@ -58,7 +58,7 @@ public class SimPlayer
             }
             else if (handler is StarlingHandler)
             {
-                StarlingHandler(handler).container = starling.display.DisplayObjectContainer(renderTarget);
+                StarlingHandler(handler).container = renderTarget as starling.display.DisplayObjectContainer;
             }
             else {
                 throw new Error("Unknown particle handler " + handler);
