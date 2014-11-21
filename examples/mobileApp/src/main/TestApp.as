@@ -32,6 +32,7 @@ public class TestApp extends Sprite
     private var player : SimPlayer;
     private var loader : SimLoader;
     private var infoTF : TextField;
+    private var cnt : uint = 0;
 
     public function TestApp()
     {
@@ -90,7 +91,11 @@ public class TestApp extends Sprite
     private function onEnterFrame(event : starling.events.Event) : void
     {
         player.stepSimulation();
-        infoTF.text = "particles: " + loader.project.numberOfParticles;
+        cnt++;
+        if (cnt%30 == 0)
+        {
+            infoTF.text = "particles: " + loader.project.numberOfParticles;
+        }
     }
 
 
