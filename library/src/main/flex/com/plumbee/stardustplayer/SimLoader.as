@@ -36,6 +36,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         const loadedZip : Zip = new Zip();
         loadedZip.loadBytes( data );
         const descriptorJSON : Object = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
+        if (uint(descriptorJSON.version) < 2)
+        {
+            trace("Stardust Sim Loader: WARNING This is a simulation created with a old version of the editor, it might not run.");
+        }
         _project = new ProjectValueObject( descriptorJSON );
 
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)

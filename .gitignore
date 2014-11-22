@@ -4,3 +4,4 @@ stardust-sim-player.iml
 build/*
 *.iml
 .idea/*
+bin-debug/*

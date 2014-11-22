@@ -3,7 +3,6 @@ package
 import com.plumbee.stardustplayer.SimLoader;
 import com.plumbee.stardustplayer.ZipFileNames;
 import com.plumbee.stardustplayer.emitter.EmitterValueObject;
-import com.plumbee.stardust.model.DisplayModes;
 import com.plumbee.stardustplayer.project.ProjectValueObject;
 
 import flash.display.BlendMode;
@@ -52,7 +51,6 @@ public class SimLoaderTest
         assertEquals( null, sim.backgroundFileName );
         assertEquals( null, sim.backgroundImage );
         assertEquals( null, sim.backgroundRawData );
-        assertEquals( DisplayModes.DISPLAY_LIST, sim.displayMode );
 
         assertEquals( 2, sim.numberOfEmitters );
     }
@@ -104,7 +102,7 @@ public class SimLoaderTest
     {
         const emitter0 : Emitter2D = EmitterValueObject(SimLoader(event.target).project.emitters[0] ).emitter;
         assertEquals( 3, emitter0.sd::actions.length );
-        assertEquals( 5, emitter0.sd::initializers.length );
+        assertEquals( 3, emitter0.sd::initializers.length );
         assertEquals( 34, ImpulseClock(emitter0.clock ).impulseCount );
         assertEquals( 1, ImpulseClock(emitter0.clock ).repeatCount );
         assertTrue( (emitter0.particleHandler is DisplayObjectHandler) );
@@ -112,7 +110,7 @@ public class SimLoaderTest
 
         const emitter1 : Emitter2D = EmitterValueObject(SimLoader(event.target).project.emitters[1] ).emitter;
         assertEquals( 3, emitter1.sd::actions.length );
-        assertEquals( 5, emitter1.sd::initializers.length );
+        assertEquals( 3, emitter1.sd::initializers.length );
         assertEquals( 1, SteadyClock(emitter1.clock ).ticksPerCall );
         assertTrue( (emitter1.particleHandler is DisplayObjectHandler) );
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter1.particleHandler ).blendMode );
