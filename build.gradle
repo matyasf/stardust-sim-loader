@@ -46,11 +46,18 @@ dependencies {
 
     internal group: 'com.plumbee', name: 'stardust-library', version: '2.37', ext: 'swc'
     internal group: 'org.as3commons', name: 'as3commons-zip', version: '1.0-2014-Nov-SVN', ext: 'swc'
+
+    test group: 'org.flexunit', name: 'flexunit-tasks', version: '4.2.0', ext: 'jar'
+    test group: 'org.flexunit', name: 'flexunit-as3', version: '4.2.0', ext: 'swc'
+    test group: 'org.flexunit', name: 'flexunit-aircilistener', version: '4.2.0', ext: 'swc'
+    test group: 'org.flexunit', name: 'flexunit-cilistener', version: '4.2.0', ext: 'swc'
+    test group: 'org.flexunit', name: 'flexunit-uilistener', version: '4.2.0', ext: 'swc'
 }
 
 additionalCompilerOptions = [
+    '-inline',
     '-debug=true',
-    '-keep-as3-metadata+=Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
+    '-keep-as3-metadata+=Inline,Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
 ]
 
 sdkAutoInstall {

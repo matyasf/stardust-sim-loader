@@ -6,12 +6,14 @@ Loading and playback library for the stardust simulations made with the stardust
 
 ##.sde file format specification 1.0
 
-.sde are Stardust simulation files created in the stardust editor. They can be played back by this library. The file is actually a .zip file that is compressed with store only option.
+.sde are Stardust simulation files created in the stardust editor which can be played back by this library. The file is actually a .zip file that is compressed with store only option.
 
 It contains the following files:
 - descriptor.json
 - emitterImage_[number].png : The bitmap that is used to render the particles from emitter [number], always in .png format. There are always the same number of these as emitters.
-- stardustEmitter_[number].xml : The stardust simulation descriptor for emitter [number]. A single project can contain unlimited number of emitters (but more than 8-10 can severely impact performance).
+- stardustEmitter_[number].xml : The stardust simulation descriptor for emitter [number].
+
+ A single project can contain unlimited number of emitters (but a lot of them can negatively impact performance).
 
 
 descriptor.json specification: This is a JSON file containing settings for the simulation, an example how it can look:
