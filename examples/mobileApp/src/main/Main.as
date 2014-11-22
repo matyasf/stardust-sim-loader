@@ -13,10 +13,14 @@ public class Main extends Sprite {
 
     private var _starling:Starling;
 
+    /**
+     * Example Starling/mobile project. The simulation is rather basic, its more meant as a benchmark to test
+     * performance on different devices.
+     */
     public function Main()
     {
-        this.mouseEnabled = this.mouseChildren = false;
-        this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
+        mouseEnabled = mouseChildren = false;
+        loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
     }
 
     private function loaderInfo_completeHandler(event:Event):void
@@ -31,35 +35,35 @@ public class Main extends Sprite {
         _starling.start();
         _starling.showStatsAt(HAlign.RIGHT, VAlign.BOTTOM);
 
-        this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
-        this.stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
+        stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
+        stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
     }
 
     private function stage_resizeHandler(event:Event):void
     {
-        this._starling.stage.stageWidth = this.stage.stageWidth;
-        this._starling.stage.stageHeight = this.stage.stageHeight;
+        _starling.stage.stageWidth = stage.stageWidth;
+        _starling.stage.stageHeight = stage.stageHeight;
 
-        const viewPort:Rectangle = this._starling.viewPort;
-        viewPort.width = this.stage.stageWidth;
-        viewPort.height = this.stage.stageHeight;
+        const viewPort:Rectangle = _starling.viewPort;
+        viewPort.width = stage.stageWidth;
+        viewPort.height = stage.stageHeight;
         try
         {
-            this._starling.viewPort = viewPort;
+            _starling.viewPort = viewPort;
         }
         catch(error:Error) {}
     }
 
     private function stage_deactivateHandler(event:Event):void
     {
-        this._starling.stop();
-        this.stage.addEventListener(Event.ACTIVATE, stage_activateHandler, false, 0, true);
+        _starling.stop();
+        stage.addEventListener(Event.ACTIVATE, stage_activateHandler);
     }
 
     private function stage_activateHandler(event:Event):void
     {
-        this.stage.removeEventListener(Event.ACTIVATE, stage_activateHandler);
-        this._starling.start();
+        stage.removeEventListener(Event.ACTIVATE, stage_activateHandler);
+        _starling.start();
     }
 
 
