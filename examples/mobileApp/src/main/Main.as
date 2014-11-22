@@ -15,7 +15,7 @@ public class Main extends Sprite {
 
     /**
      * Example Starling/mobile project. The simulation is rather basic, its more meant as a benchmark to test
-     * performance on different devices.
+     * performance on different devices and to show how to integrate with Starling.
      */
     public function Main()
     {

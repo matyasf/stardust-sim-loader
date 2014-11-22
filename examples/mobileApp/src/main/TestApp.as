@@ -48,14 +48,14 @@ public class TestApp extends Sprite
         {
             for each (var emitterVO:EmitterValueObject in loader.project.emitters)
             {
-                // this emitter's particles live on average for 200 frames, thus adding 0.25 particles/frane
-                // will raise the total particles on screen by 50
-                SteadyClock(emitterVO.emitter.clock).ticksPerCall += 0.25;
+                // this emitter's particles live on average for 200 frames, thus adding 0.5 particles/frame
+                // will raise the total particles on screen by 100
+                SteadyClock(emitterVO.emitter.clock).ticksPerCall += 0.5;
             }
 
         });
         addParticlesButton.y = 25;
-        addParticlesButton.label = "+50 particles";
+        addParticlesButton.label = "+100 particles";
         addParticlesButton.validate();
         addChild(addParticlesButton);
 
@@ -75,6 +75,7 @@ public class TestApp extends Sprite
         infoTF = new TextField(250, 25, "", "Verdana", 20, 0xFFFFFF);
         infoTF.hAlign = HAlign.LEFT;
         addChild(infoTF);
+
         player = new SimPlayer();
         loader = new SimLoader();
         loader.addEventListener(flash.events.Event.COMPLETE, onSimLoaded);
