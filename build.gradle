@@ -24,8 +24,10 @@ version = '2.46'
 type = 'swc'
 
 srcDirs	= ['library/src/main/flex']
-testDirs = ['library/test/flex']
-frameworkLinkage = none
+resourceDirs = ['library/src/main/resources']
+testDirs = ['library/src/test/flex']
+testResourceDirs = ['library/src/test/resources']
+frameworkLinkage = 'none'
 
 repositories {
     mavenLocal()
@@ -59,7 +61,9 @@ dependencies {
 additionalCompilerOptions = [
     '-inline',
     '-debug=true',
-    '-keep-as3-metadata+=Inline,Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
+    // Inline is only in ASC 2.0
+    //'-keep-as3-metadata+=Inline,Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
+    '-keep-as3-metadata+=Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
 ]
 
 sdkAutoInstall {
