@@ -24,6 +24,8 @@ version = '2.46'
 type = 'swc'
 
 srcDirs	= ['library/src/main/flex']
+testDirs = ['library/test/flex']
+frameworkLinkage = none
 
 repositories {
     mavenLocal()

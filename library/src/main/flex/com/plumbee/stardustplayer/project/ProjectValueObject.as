@@ -50,8 +50,7 @@ public class ProjectValueObject
         return numParticles;
     }
 
-    /** The simulation will be unusable after calling this method. Note that the StarlingHandler's texture will
-     *  not be disposed. */
+    /** The simulation will be unusable after calling this method. Note that this disposes StarlingHandler's texture. */
     public function destroy() : void
     {
         for each (var emitterValueObject : EmitterValueObject in emitters)
@@ -60,7 +59,10 @@ public class ProjectValueObject
             emitterValueObject.emitter.clearActions();
             emitterValueObject.emitter.clearInitializers();
             emitterValueObject.image = null;
-            // TODO destroy StarlingHandler properly
+            if (emitterValueObject.texture)
+            {
+                emitterValueObject.texture.dispose();
+            }
             delete emitters[emitterValueObject.id];
         }
         backgroundImage = null;
