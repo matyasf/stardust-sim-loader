@@ -20,7 +20,7 @@ apply plugin: 'ideafx'
 apply plugin: 'maven'
 
 group = 'com.plumbee'
-version = '2.46'
+version = '3.0'
 type = 'swc'
 
 srcDirs	= ['library/src/main/flex']
@@ -48,7 +48,7 @@ repositories {
 dependencies {
     flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.13.0', ext: 'tar.gz'
 
-    internal group: 'com.plumbee', name: 'stardust-library', version: '2.37', ext: 'swc'
+    internal group: 'com.plumbee', name: 'stardust-library', version: '3.0', ext: 'swc'
     internal group: 'org.as3commons', name: 'as3commons-zip', version: '1.0-2014-Nov-SVN', ext: 'swc'
 
     test group: 'org.flexunit', name: 'flexunit-tasks', version: '4.2.0', ext: 'jar'
@@ -59,11 +59,9 @@ dependencies {
 }
 
 additionalCompilerOptions = [
-    '-inline',
+    //'-inline',  // Inline is only in ASC 2.0
     '-debug=true',
-    // Inline is only in ASC 2.0
-    //'-keep-as3-metadata+=Inline,Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
-    '-keep-as3-metadata+=Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
+    '-keep-as3-metadata+=Inline,Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
 ]
 
 sdkAutoInstall {
