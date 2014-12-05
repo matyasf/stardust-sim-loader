@@ -1,12 +1,20 @@
 package com.plumbee.stardustplayer.emitter
 {
 
+import com.plumbee.stardustplayer.Particle2DSnapshot;
+
 import flash.display.BitmapData;
+import flash.net.registerClassAlias;
+import flash.utils.ByteArray;
+
+import idv.cjcat.stardustextended.common.particles.Particle;
 
 import idv.cjcat.stardustextended.sd;
 
 import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
 import idv.cjcat.stardustextended.twoD.handlers.ISpriteSheetHandler;
+import idv.cjcat.stardustextended.twoD.particles.Particle2D;
+import idv.cjcat.stardustextended.twoD.particles.PooledParticle2DFactory;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.textures.Texture;
@@ -16,8 +24,11 @@ use namespace sd;
 public class EmitterValueObject
 {
     public var emitter : Emitter2D;
+    /** Snapshot of the particles. If its not null then the emitter will have the particles here upon creation. */
+    public var emitterSnapshot : ByteArray;
     private var _id : uint;
     private var _image : BitmapData;
+
 
     public function EmitterValueObject( emitterId : uint, _emitter : Emitter2D )
     {
@@ -54,6 +65,20 @@ public class EmitterValueObject
             return StarlingHandler(emitter.particleHandler).texture;
         }
         return null;
+    }
+
+    public function addParticlesFromSnapshot() : void
+    {
+        registerClassAlias("com.plumbee.stardustplayer.Particle2DSnapshot", Particle2DSnapshot);
+        emitterSnapshot.position = 0;
+        var particlesData : Array = emitterSnapshot.readObject();
+        var factory : PooledParticle2DFactory = new PooledParticle2DFactory();
+        var particles:Vector.<Particle> = factory.createParticles(particlesData.length, 0);
+        for (var j:int = 0; j < particlesData.length; j++) {
+            var particle:Particle2D = Particle2D(particles[j]);
+            Particle2DSnapshot(particlesData[j]).writeDataTo(particle);
+        }
+        emitter.addParticles(particles);
     }
 
 }

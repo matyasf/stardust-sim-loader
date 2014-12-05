@@ -82,7 +82,6 @@ public class SimPlayer
         }
     }
 
-    /** When calling this the Emitter2D objects will be recreated, so make sure you update your references. */
     public function resetSimulation() : void
     {
         for each (var emitterValueObject : EmitterValueObject in _sim.emitters)

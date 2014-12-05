@@ -14,6 +14,11 @@ public class ZipFileNames {
         return "emitterImage_" + id + ".png";
     }
 
+    public static function getParticleSnapshotName(id : int) : String
+    {
+        return "emitterSnapshot_" + id + ".bytearray";
+    }
+
     public static function isEmitterXMLName(filename : String) : Boolean
     {
         return (filename.substr(0,16) == EMITTER_NAME_PREFIX)

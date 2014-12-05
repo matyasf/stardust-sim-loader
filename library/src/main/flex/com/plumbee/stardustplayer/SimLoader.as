@@ -16,6 +16,7 @@ import flash.utils.ByteArray;
 import idv.cjcat.stardustextended.sd;
 
 import org.as3commons.zip.Zip;
+import org.as3commons.zip.ZipFile;
 
 use namespace sd;
 
@@ -52,13 +53,21 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 const stardustBA : ByteArray = loadedZip.getFileByName( loadedFileName ).content;
                 const emitterXml : XML = new XML( stardustBA.readUTFBytes( stardustBA.length ) );
 
-                _project.emitters[emitterId] = new EmitterValueObject(emitterId, EmitterBuilder.buildEmitter(emitterXml));
+                const emitterVO : EmitterValueObject = new EmitterValueObject(emitterId, EmitterBuilder.buildEmitter(emitterXml));
+                _project.emitters[emitterId] = emitterVO;
 
                 const loadImageJob : LoadByteArrayJob = new LoadByteArrayJob(
                         emitterId.toString(),
                         ZipFileNames.getImageName(emitterId),
                         loadedZip.getFileByName(ZipFileNames.getImageName(emitterId)).content );
                 sequenceLoader.addJob( loadImageJob );
+
+                var snapshot : ZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
+                if (snapshot)
+                {
+                    emitterVO.emitterSnapshot = snapshot.content;
+                    emitterVO.addParticlesFromSnapshot();
+                }
             }
         }
 
