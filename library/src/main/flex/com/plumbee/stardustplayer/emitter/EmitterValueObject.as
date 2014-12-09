@@ -6,6 +6,7 @@ import com.plumbee.stardustplayer.Particle2DSnapshot;
 import flash.display.BitmapData;
 import flash.net.registerClassAlias;
 import flash.utils.ByteArray;
+import flash.utils.getQualifiedClassName;
 
 import idv.cjcat.stardustextended.common.particles.Particle;
 
@@ -69,7 +70,7 @@ public class EmitterValueObject
 
     public function addParticlesFromSnapshot() : void
     {
-        registerClassAlias("com.plumbee.stardustplayer.Particle2DSnapshot", Particle2DSnapshot);
+        registerClassAlias(getQualifiedClassName(Particle2DSnapshot), Particle2DSnapshot);
         emitterSnapshot.position = 0;
         var particlesData : Array = emitterSnapshot.readObject();
         var factory : PooledParticle2DFactory = new PooledParticle2DFactory();
