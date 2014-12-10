@@ -17,12 +17,15 @@ public class ProjectValueObject
     public var backgroundFileName : String;
     public var backgroundImage : DisplayObject;
     public var backgroundRawData : ByteArray;
+    public var fps : Number;
 
     public function ProjectValueObject( projectJSON : Object )
     {
         version = projectJSON.version;
 
         hasBackground = (projectJSON.hasBackground == "true");
+
+        fps = projectJSON.fps;
 
         if ( projectJSON.backgroundFileName )
         {
