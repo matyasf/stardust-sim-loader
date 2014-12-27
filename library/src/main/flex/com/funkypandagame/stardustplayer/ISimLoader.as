@@ -1,7 +1,7 @@
-package com.plumbee.stardustplayer
+package com.funkypandagame.stardustplayer
 {
 
-import com.plumbee.stardustplayer.project.ProjectValueObject;
+import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 
 import flash.events.IEventDispatcher;
 import flash.utils.ByteArray;

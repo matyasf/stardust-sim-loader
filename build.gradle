@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 buildscript {
     repositories {
         mavenLocal()
@@ -19,15 +21,15 @@ apply plugin: 'gradlefx'
 apply plugin: 'ideafx'
 apply plugin: 'maven'
 
-group = 'com.plumbee'
-version = '3.0'
+group = 'com.funkypandagame'
+version = '3.2'
 type = 'swc'
 
 srcDirs	= ['library/src/main/flex']
 resourceDirs = ['library/src/main/resources']
 testDirs = ['library/src/test/flex']
 testResourceDirs = ['library/src/test/resources']
-frameworkLinkage = 'none'
+playerVersion = '15.0'
 
 repositories {
     mavenLocal()
@@ -39,17 +41,18 @@ repositories {
         }
     }
     ivy {
-        name 'Apache'
-        //artifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
-        artifactPattern 'http://archive.apache.org/dist/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
+        name 'Adobe Air SDK'
+        artifactPattern  Os.isFamily(Os.FAMILY_WINDOWS) ?
+                'http://airdownload.adobe.com/air/win/download/[revision]/[module]_Compiler.[ext]' :
+                'http://airdownload.adobe.com/air/mac/download/[revision]/[module]_Compiler.[ext]'
     }
 }
 
 dependencies {
-    flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.13.0', ext: 'tar.gz'
+    airSDK group: 'com.adobe', name: 'AIRSDK', version: '15.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tbz2'
 
-    internal group: 'com.plumbee', name: 'stardust-library', version: '3.0', ext: 'swc'
-    internal group: 'org.as3commons', name: 'as3commons-zip', version: '1.0-2014-Nov-SVN', ext: 'swc'
+    external 'com.funkypandagame:stardust-library:3.2'
+    external 'org.as3commons:as3commons-zip:1.0-2014-Nov-SVN'
 
     test group: 'org.flexunit', name: 'flexunit-tasks', version: '4.2.0', ext: 'jar'
     test group: 'org.flexunit', name: 'flexunit-as3', version: '4.2.0', ext: 'swc'
@@ -58,17 +61,25 @@ dependencies {
     test group: 'org.flexunit', name: 'flexunit-uilistener', version: '4.2.0', ext: 'swc'
 }
 
-additionalCompilerOptions = [
-    //'-inline',  // Inline is only in ASC 2.0
-    '-debug=true',
-    '-keep-as3-metadata+=Inline,Inject,Embed,ChangeEvent,NonCommittingChangeEvent,PreDestroy,Bindable'
+def compilerOptions = [
+        '-inline',
+        // AS3 metadata
+        '-keep-as3-metadata+=Inline,Embed,SWF,Transient'
 ]
+
+additionalCompilerOptions = compilerOptions
 
 sdkAutoInstall {
     showPrompts = false
 }
 
-///////////////////////////////////////// wrapper
+flexUnit {
+    additionalCompilerOptions = compilerOptions
+    command = flashPlayerLocation
+    template = buildDir.toString() + "/reports/FlexUnitRunnerTemplate.as"
+}
+
+///////////////////////////////////////// Wrapper
 task wrapper(type: Wrapper) {
     group = 'Buildmaster'
     description = 'Generates gradlew and gradlew.bat bootstrap scripts.'
@@ -83,6 +94,19 @@ uploadArchives {
     repositories {
         mavenDeployer {
             repository url: mavenLocal().url
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                project.configurations["external"].allDependencies.each { Dependency dependency ->
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dependency.group)
+                    dependencyNode.appendNode('artifactId', dependency.name)
+                    dependencyNode.appendNode('version', dependency.version)
+                    dependencyNode.appendNode('type', 'swc')
+
+                }
+            }
         }
         //if (deployToRepoManager) {
         //    mavenDeployer {
@@ -93,4 +117,3 @@ uploadArchives {
         //}
     }
 }
-

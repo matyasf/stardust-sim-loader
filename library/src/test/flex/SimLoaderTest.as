@@ -1,9 +1,9 @@
 package
 {
-import com.plumbee.stardustplayer.SimLoader;
-import com.plumbee.stardustplayer.ZipFileNames;
-import com.plumbee.stardustplayer.emitter.EmitterValueObject;
-import com.plumbee.stardustplayer.project.ProjectValueObject;
+import com.funkypandagame.stardustplayer.SimLoader;
+import com.funkypandagame.stardustplayer.ZipFileNames;
+import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
+import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 
 import flash.display.BlendMode;
 
@@ -45,7 +45,7 @@ public class SimLoaderTest
     private function projectValues_areSet_loaded( event : Event, passThroughData : Object) : void
     {
         const sim : ProjectValueObject = SimLoader(event.target).project;
-        assertEquals( 1, sim.version );
+        assertEquals( 2, sim.version );
         assertEquals( 0, sim.backgroundColor );
         assertEquals( false, sim.hasBackground );
         assertEquals( null, sim.backgroundFileName );
@@ -70,7 +70,6 @@ public class SimLoaderTest
         const emitter0 : EmitterValueObject = SimLoader(event.target).project.emitters[0];
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter0.emitter.particleHandler).blendMode );
         assertEquals( 12, ImpulseClock(emitter0.emitter.clock).burstInterval );
-        assertEquals( "firstEmitter", emitter0.emitter.name );
         assertNotNull( emitter0.emitter );
         assertEquals( 0, emitter0.id );
         assertNotNull( emitter0.image );
@@ -80,7 +79,6 @@ public class SimLoaderTest
         const emitter1 : EmitterValueObject = SimLoader(event.target).project.emitters[1];
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter1.emitter.particleHandler).blendMode );
 	    assertTrue( emitter1.emitter.clock is SteadyClock );
-        assertEquals( "emitterImage_1.png", emitter1.emitter.name );
         assertNotNull( emitter1.emitter );
         assertEquals( 1, emitter1.id );
         assertNotNull( emitter1.image );

@@ -1,4 +1,4 @@
-package com.plumbee.stardustplayer
+package com.funkypandagame.stardustplayer
 {
 import idv.cjcat.stardustextended.twoD.particles.*;
 

@@ -1,7 +1,7 @@
-package com.plumbee.stardustplayer.emitter
+package com.funkypandagame.stardustplayer.emitter
 {
 
-import com.plumbee.stardustplayer.Particle2DSnapshot;
+import com.funkypandagame.stardustplayer.Particle2DSnapshot;
 
 import flash.display.BitmapData;
 import flash.net.registerClassAlias;

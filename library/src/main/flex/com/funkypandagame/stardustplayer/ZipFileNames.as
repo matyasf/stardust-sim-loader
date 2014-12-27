@@ -1,4 +1,4 @@
-package com.plumbee.stardustplayer {
+package com.funkypandagame.stardustplayer {
 
 public class ZipFileNames {
 

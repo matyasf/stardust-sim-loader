@@ -1,4 +1,4 @@
-package com.plumbee.stardustplayer.sequenceLoader
+package com.funkypandagame.stardustplayer.sequenceLoader
 {
 
 import flash.display.DisplayObject;

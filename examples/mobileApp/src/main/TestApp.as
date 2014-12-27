@@ -1,8 +1,8 @@
 package main
 {
-import com.plumbee.stardustplayer.SimLoader;
-import com.plumbee.stardustplayer.SimPlayer;
-import com.plumbee.stardustplayer.emitter.EmitterValueObject;
+import com.funkypandagame.stardustplayer.SimLoader;
+import com.funkypandagame.stardustplayer.SimPlayer;
+import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 
 import feathers.controls.Button;
 import feathers.themes.MetalWorksMobileTheme;

@@ -1,8 +1,8 @@
 package
 {
 
-import com.plumbee.stardustplayer.SimLoader;
-import com.plumbee.stardustplayer.SimPlayer;
+import com.funkypandagame.stardustplayer.SimLoader;
+import com.funkypandagame.stardustplayer.SimPlayer;
 
 import flash.display.Sprite;
 

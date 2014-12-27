@@ -1,4 +1,4 @@
-package com.plumbee.stardustplayer.emitter
+package com.funkypandagame.stardustplayer.emitter
 {
 
 import idv.cjcat.stardustextended.common.CommonClassPackage;

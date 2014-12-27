@@ -1,12 +1,12 @@
-package com.plumbee.stardustplayer
+package com.funkypandagame.stardustplayer
 {
 
-import com.plumbee.stardustplayer.emitter.EmitterBuilder;
-import com.plumbee.stardustplayer.emitter.EmitterValueObject;
-import com.plumbee.stardustplayer.project.ProjectValueObject;
-import com.plumbee.stardustplayer.sequenceLoader.ISequenceLoader;
-import com.plumbee.stardustplayer.sequenceLoader.LoadByteArrayJob;
-import com.plumbee.stardustplayer.sequenceLoader.SequenceLoader;
+import com.funkypandagame.stardustplayer.emitter.EmitterBuilder;
+import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
+import com.funkypandagame.stardustplayer.project.ProjectValueObject;
+import com.funkypandagame.stardustplayer.sequenceLoader.ISequenceLoader;
+import com.funkypandagame.stardustplayer.sequenceLoader.LoadByteArrayJob;
+import com.funkypandagame.stardustplayer.sequenceLoader.SequenceLoader;
 
 import flash.display.Bitmap;
 
