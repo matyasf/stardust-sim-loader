@@ -58,7 +58,7 @@ public class EmitterValueObject
 
     /** Returns the texture used by the simulation. Only has value if image has been set and its rendering via Starling.
      *  Note, that this texture does *not* get disposed automatically, you need to do it manually if you are no longer
-     *  using it. */
+     *  using it or call ProjectValueObject.destroy() */
     public function get texture():Texture
     {
         if (emitter.particleHandler is StarlingHandler)

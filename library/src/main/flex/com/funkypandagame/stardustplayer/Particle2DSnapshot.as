@@ -1,6 +1,6 @@
 package com.funkypandagame.stardustplayer
 {
-import idv.cjcat.stardustextended.twoD.particles.*;
+import idv.cjcat.stardustextended.twoD.particles.Particle2D;
 
 public class Particle2DSnapshot {
 

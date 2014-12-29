@@ -8,6 +8,8 @@ import flash.utils.ByteArray;
 
 import flash.utils.Dictionary;
 
+import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
+
 public class ProjectValueObject
 {
     public var version : Number;
@@ -16,7 +18,9 @@ public class ProjectValueObject
     public var hasBackground : Boolean;
     public var backgroundFileName : String;
     public var backgroundImage : DisplayObject;
+    /** The background image as ByteArray. */
     public var backgroundRawData : ByteArray;
+    /** The target FPS of the simulation. */
     public var fps : Number;
 
     public function ProjectValueObject( projectJSON : Object )
@@ -53,6 +57,16 @@ public class ProjectValueObject
         return numParticles;
     }
 
+    /** Convenience function to get all emitters */
+    public function get emittersArr() : Vector.<Emitter2D>
+    {
+        const emitterVec : Vector.<Emitter2D> = new Vector.<Emitter2D>();
+        for each (var emVO : EmitterValueObject in emitters)
+        {
+            emitterVec.push(emVO.emitter);
+        }
+        return emitterVec;
+    }
     /** The simulation will be unusable after calling this method. Note that this disposes StarlingHandler's texture. */
     public function destroy() : void
     {
@@ -62,6 +76,7 @@ public class ProjectValueObject
             emitterValueObject.emitter.clearActions();
             emitterValueObject.emitter.clearInitializers();
             emitterValueObject.image = null;
+            emitterValueObject.emitterSnapshot = null;
             if (emitterValueObject.texture)
             {
                 emitterValueObject.texture.dispose();
@@ -69,6 +84,7 @@ public class ProjectValueObject
             delete emitters[emitterValueObject.id];
         }
         backgroundImage = null;
+        backgroundRawData = null;
     }
 
 }

@@ -11,6 +11,7 @@ import flash.display.DisplayObjectContainer;
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 
 import idv.cjcat.stardustextended.common.handlers.ParticleHandler;
+import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
 import idv.cjcat.stardustextended.twoD.handlers.BitmapHandler;
 import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
 import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectSpriteSheetHandler;
@@ -33,9 +34,9 @@ public class SimPlayer
 
     public function setRenderTarget(renderTarget : Object) : void
     {
-        for each (var emitterValueObject : EmitterValueObject in _sim.emitters)
+        for each (var emitter : Emitter2D in _sim.emittersArr)
         {
-            const handler : ParticleHandler = emitterValueObject.emitter.particleHandler;
+            const handler : ParticleHandler = emitter.particleHandler;
             if (handler is DisplayObjectHandler)
             {
                 DisplayObjectHandler(handler).container = renderTarget as DisplayObjectContainer;
@@ -68,15 +69,16 @@ public class SimPlayer
 
     public function stepSimulation( numSteps : uint = 1) : void
     {
-        for each (var emitterValueObject : EmitterValueObject in _sim.emitters)
+        const emitters : Vector.<Emitter2D> = _sim.emittersArr;
+        for each (var emitter : Emitter2D in emitters)
         {
-            emitterValueObject.emitter.step( numSteps );
-	        if (emitterValueObject.emitter.clock is ImpulseClock)
+            emitter.step( numSteps );
+	        if (emitter.clock is ImpulseClock)
 	        {
-		        const impulseClock : ImpulseClock = ImpulseClock(emitterValueObject.emitter.clock);
-		        if (emitterValueObject.emitter.currentTime % impulseClock.burstInterval == 1)
+		        const impulseClock : ImpulseClock = ImpulseClock(emitter.clock);
+		        if (emitter.currentTime % impulseClock.burstInterval == 1)
 		        {
-			        ImpulseClock(emitterValueObject.emitter.clock ).impulse();
+                    impulseClock.impulse();
 		        }
 	        }
         }

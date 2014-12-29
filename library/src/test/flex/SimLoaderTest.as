@@ -99,16 +99,16 @@ public class SimLoaderTest
     private function emitters_areParsedCorrectly_loaded( event : Event, passThroughData : Object) : void
     {
         const emitter0 : Emitter2D = EmitterValueObject(SimLoader(event.target).project.emitters[0] ).emitter;
-        assertEquals( 3, emitter0.sd::actions.length );
-        assertEquals( 3, emitter0.sd::initializers.length );
+        assertEquals( 3, emitter0.actions.length );
+        assertEquals( 3, emitter0.initializers.length );
         assertEquals( 34, ImpulseClock(emitter0.clock ).impulseCount );
         assertEquals( 1, ImpulseClock(emitter0.clock ).repeatCount );
         assertTrue( (emitter0.particleHandler is DisplayObjectHandler) );
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter0.particleHandler ).blendMode );
 
         const emitter1 : Emitter2D = EmitterValueObject(SimLoader(event.target).project.emitters[1] ).emitter;
-        assertEquals( 3, emitter1.sd::actions.length );
-        assertEquals( 3, emitter1.sd::initializers.length );
+        assertEquals( 3, emitter1.actions.length );
+        assertEquals( 3, emitter1.initializers.length );
         assertEquals( 1, SteadyClock(emitter1.clock ).ticksPerCall );
         assertTrue( (emitter1.particleHandler is DisplayObjectHandler) );
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter1.particleHandler ).blendMode );
