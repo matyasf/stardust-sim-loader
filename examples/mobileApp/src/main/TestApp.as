@@ -3,9 +3,8 @@ package main
 import com.funkypandagame.stardustplayer.SimLoader;
 import com.funkypandagame.stardustplayer.SimPlayer;
 import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
+import flash.events.MouseEvent;
 
-import feathers.controls.Button;
-import feathers.themes.MetalWorksMobileTheme;
 import idv.cjcat.stardustextended.common.clocks.*
 import flash.events.Event;
 
@@ -24,7 +23,7 @@ import starling.utils.VAlign;
 public class TestApp extends Sprite
 {
 
-    [Embed(source="/../assets/stardustProjectDEFAULT.sde", mimeType = 'application/octet-stream')]
+    [Embed(source="/../assets/exampleSim.sde", mimeType = 'application/octet-stream')]
     private static var Asset:Class;
     private static var assetInstance:ByteArray = new Asset();
 
@@ -37,14 +36,13 @@ public class TestApp extends Sprite
     public function TestApp()
     {
         Starling.current.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
-        new MetalWorksMobileTheme();
 
         simContainer = new Sprite();
         simContainer.touchable = false;
         addChild(simContainer);
 
-        var addParticlesButton : Button = new Button();
-        addParticlesButton.addEventListener(starling.events.Event.TRIGGERED, function (evt : starling.events.Event) : void
+        var addParticlesButton : MyButton = new MyButton("+100 particles");
+        addParticlesButton.addEventListener(MouseEvent.CLICK, function (evt : MouseEvent) : void
         {
             for each (var emitterVO:EmitterValueObject in loader.project.emitters)
             {
@@ -55,22 +53,18 @@ public class TestApp extends Sprite
 
         });
         addParticlesButton.y = 25;
-        addParticlesButton.label = "+100 particles";
-        addParticlesButton.validate();
-        addChild(addParticlesButton);
+        Starling.current.nativeStage.addChild(addParticlesButton);
 
-        var lowerParticlesButton : Button = new Button();
-        lowerParticlesButton.addEventListener(starling.events.Event.TRIGGERED, function (evt : starling.events.Event) : void
+        var lowerParticlesButton : MyButton = new MyButton("-50 particles");
+        lowerParticlesButton.addEventListener(MouseEvent.CLICK, function (evt : MouseEvent) : void
         {
             for each (var emitterVO:EmitterValueObject in loader.project.emitters)
             {
                 SteadyClock(emitterVO.emitter.clock).ticksPerCall -= 0.25;
             }
         });
-        lowerParticlesButton.label = "-50 particles";
-        lowerParticlesButton.validate();
         lowerParticlesButton.y = 100;
-        addChild(lowerParticlesButton);
+        Starling.current.nativeStage.addChild(lowerParticlesButton);
 
         infoTF = new TextField(250, 25, "", "Verdana", 20, 0xFFFFFF);
         infoTF.hAlign = HAlign.LEFT;
@@ -93,7 +87,7 @@ public class TestApp extends Sprite
     {
         player.stepSimulation();
         cnt++;
-        if (cnt%30 == 0)
+        if (cnt%60 == 0)
         {
             infoTF.text = "particles: " + loader.project.numberOfParticles;
         }

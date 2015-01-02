@@ -25,12 +25,13 @@ public class Main extends Sprite {
 
     private function loaderInfo_completeHandler(event:Event):void
     {
+        stage.color = 0x565656;
         stage.align = StageAlign.TOP_LEFT;
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.frameRate = 60;
         Starling.handleLostContext = true;
         Starling.multitouchEnabled = true;
-        _starling = new Starling(TestApp, this.stage);
+        _starling = new Starling(TestApp, stage);
         _starling.enableErrorChecking = false;
         _starling.start();
         _starling.showStatsAt(HAlign.RIGHT, VAlign.BOTTOM);

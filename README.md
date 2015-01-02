@@ -20,10 +20,11 @@ descriptor.json specification: This is a JSON file containing settings for the s
 
 ```json
 {
-	"version": 1,
+	"version": 2,
 	"backgroundColor": 0,
     "backgroundFileName": "background.png",
 	"hasBackground": "true"
+	"fps": 60
 }
 ```
 

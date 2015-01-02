@@ -15,8 +15,9 @@ import flash.events.EventDispatcher;
 import flash.utils.ByteArray;
 import idv.cjcat.stardustextended.sd;
 
+import org.as3commons.zip.IZipFile;
+
 import org.as3commons.zip.Zip;
-import org.as3commons.zip.ZipFile;
 
 use namespace sd;
 
@@ -62,7 +63,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                         loadedZip.getFileByName(ZipFileNames.getImageName(emitterId)).content );
                 sequenceLoader.addJob( loadImageJob );
 
-                var snapshot : ZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
+                var snapshot : IZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
                 if (snapshot)
                 {
                     emitterVO.emitterSnapshot = snapshot.content;
