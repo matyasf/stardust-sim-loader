@@ -4,7 +4,7 @@ buildscript {
     repositories {
         mavenLocal()
         maven {
-            url 'http://ec2-54-200-56-47.us-west-2.compute.amazonaws.com:8081/artifactory/repo'
+            url repoManagerURL + 'repo'
             credentials {
                 username = mavenUsername
                 password = mavenPassword
@@ -34,7 +34,7 @@ playerVersion = '15.0'
 repositories {
     mavenLocal()
     maven {
-        url 'http://ec2-54-200-56-47.us-west-2.compute.amazonaws.com:8081/artifactory/repo'
+        url repoManagerURL + 'repo'
         credentials {
             username = mavenUsername
             password = mavenPassword
@@ -92,8 +92,15 @@ task wrapper(type: Wrapper) {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository url: mavenLocal().url
-
+            // invoke this with the -PdeployToRepoManager command line argument
+            if (project.hasProperty('deployToRepoManager')) {
+                repository(url: repoManagerURL + 'funkypanda') {
+                    authentication(userName: mavenUsername, password: mavenPassword)
+                }
+            }
+            else {
+                repository url: mavenLocal().url
+            }
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
@@ -107,12 +114,5 @@ uploadArchives {
                 }
             }
         }
-        //if (deployToRepoManager) {
-        //    mavenDeployer {
-        //        repository(url: repoManagerURL) {
-        //            authentication(userName: mavenUsername, password: mavenPassword)
-        //        }
-        //    }
-        //}
     }
 }
