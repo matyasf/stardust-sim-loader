@@ -25,10 +25,10 @@ group = 'com.funkypandagame'
 version = '3.3'
 type = 'swc'
 
-srcDirs	= ['library/src/main/flex']
-resourceDirs = ['library/src/main/resources']
-testDirs = ['library/src/test/flex']
-testResourceDirs = ['library/src/test/resources']
+srcDirs	= ['src/main/flex']
+resourceDirs = ['src/main/resources']
+testDirs = ['src/test/flex']
+testResourceDirs = ['src/test/resources']
 playerVersion = '15.0'
 
 repositories {
