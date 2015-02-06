@@ -33,7 +33,7 @@ public class SimPlayerTest
 
     private function simWithBurstClock_bursts_loaded( event : Event, passThroughData : Object) : void
     {
-        const sim : ProjectValueObject = SimLoader(event.target).project;
+        const sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
 
         const player : SimPlayer = new SimPlayer();
 
@@ -67,7 +67,7 @@ public class SimPlayerTest
 
     private function simTime_stepsCorrectTime_loaded( event : Event, passThroughData : Object) : void
     {
-        const sim : ProjectValueObject = SimLoader(event.target).project;
+        const sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
 
         const player : SimPlayer = new SimPlayer();
 
@@ -96,7 +96,7 @@ public class SimPlayerTest
 
     private function player_setsCorrectDisplayHandler_loaded( event : Event, passThroughData : Object) : void
     {
-        const sim : ProjectValueObject = SimLoader(event.target).project;
+        const sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
 
         const player : SimPlayer = new SimPlayer();
 

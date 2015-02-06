@@ -73,7 +73,14 @@ public class SequenceLoader extends EventDispatcher implements ISequenceLoader
 
     public function clearAllJobs() : void
     {
-        //TODO need to destroy all the loadjobs properly.
+        for each (var job : LoadByteArrayJob in completedJobs)
+        {
+            job.destroy();
+        }
+        for each (var job2 : LoadByteArrayJob in waitingJobs)
+        {
+            job2.destroy();
+        }
         waitingJobs = new Vector.<LoadByteArrayJob>();
         currentJob = null;
         completedJobs = new Vector.<LoadByteArrayJob>();

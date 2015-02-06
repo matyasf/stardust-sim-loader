@@ -10,6 +10,6 @@ public interface ISimLoader extends IEventDispatcher
 {
     function loadSim(data : ByteArray) : void;
 
-    function get project() : ProjectValueObject;
+    function createProjectInstance() : ProjectValueObject;
 }
 }

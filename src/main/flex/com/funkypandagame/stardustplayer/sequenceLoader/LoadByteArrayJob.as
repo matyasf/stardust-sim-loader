@@ -28,19 +28,34 @@ public class LoadByteArrayJob extends EventDispatcher
         _loader.loadBytes( _data );
     }
 
+    protected function onLoadComplete( event : Event ) : void
+    {
+        _loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, onLoadComplete );
+        dispatchEvent( new Event( Event.COMPLETE ) );
+    }
+
     public function get byteArray() : ByteArray
     {
         return _data;
     }
 
-    protected function onLoadComplete( event : Event ) : void
-    {
-        dispatchEvent( new Event( Event.COMPLETE ) );
-    }
-
     public function get content() : DisplayObject
     {
         return _loader.content;
+    }
+
+    public function destroy() : void
+    {
+        try
+        {
+            _loader.unloadAndStop();
+        }
+        catch (err: Error) {}
+        _loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, onLoadComplete );
+        _data = null;
+        _loader  = null;
+        jobName  = null;
+        fileName  = null;
     }
 }
 }

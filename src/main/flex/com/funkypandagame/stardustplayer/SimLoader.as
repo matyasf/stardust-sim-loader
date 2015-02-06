@@ -9,10 +9,12 @@ import com.funkypandagame.stardustplayer.sequenceLoader.LoadByteArrayJob;
 import com.funkypandagame.stardustplayer.sequenceLoader.SequenceLoader;
 
 import flash.display.Bitmap;
+import flash.display.DisplayObject;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.utils.ByteArray;
+
 import idv.cjcat.stardustextended.sd;
 
 import org.as3commons.zip.IZipFile;
@@ -26,8 +28,14 @@ public class SimLoader extends EventDispatcher implements ISimLoader
     public static const DESCRIPTOR_FILENAME : String = "descriptor.json";
     private static const BACKGROUND_JOB_ID : String = "backgroundID";
     private const sequenceLoader : ISequenceLoader = new SequenceLoader();
-    private var _project : ProjectValueObject;
     private var projectLoaded : Boolean = false;
+
+    private var loadedZip : Zip;
+
+    private var descriptorJSON : Object;
+    private var rawEmitterDatas : Vector.<RawEmitterData> = new Vector.<RawEmitterData>();
+    private var backgroundImage : DisplayObject;
+    private var backgroundRawData : ByteArray;
 
     /** Loads an .sde file (that is in a byteArray). */
     public function loadSim(data : ByteArray) : void
@@ -35,48 +43,31 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         projectLoaded = false;
         sequenceLoader.clearAllJobs();
 
-        const loadedZip : Zip = new Zip();
+        loadedZip = new Zip();
         loadedZip.loadBytes( data );
-        const descriptorJSON : Object = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
+        descriptorJSON = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
         if (uint(descriptorJSON.version) < 2)
         {
             trace("Stardust Sim Loader: WARNING This is a simulation created with a old version of the editor, it might not run.");
         }
-        _project = new ProjectValueObject( descriptorJSON );
-
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
             if (ZipFileNames.isEmitterXMLName(loadedFileName))
             {
                 var emitterId : uint = ZipFileNames.getEmitterID(loadedFileName);
-
-                const stardustBA : ByteArray = loadedZip.getFileByName( loadedFileName ).content;
-                const emitterXml : XML = new XML( stardustBA.readUTFBytes( stardustBA.length ) );
-
-                const emitterVO : EmitterValueObject = new EmitterValueObject(emitterId, EmitterBuilder.buildEmitter(emitterXml));
-                _project.emitters[emitterId] = emitterVO;
-
                 const loadImageJob : LoadByteArrayJob = new LoadByteArrayJob(
                         emitterId.toString(),
                         ZipFileNames.getImageName(emitterId),
                         loadedZip.getFileByName(ZipFileNames.getImageName(emitterId)).content );
                 sequenceLoader.addJob( loadImageJob );
-
-                var snapshot : IZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
-                if (snapshot)
-                {
-                    emitterVO.emitterSnapshot = snapshot.content;
-                    emitterVO.addParticlesFromSnapshot();
-                }
             }
         }
-
-        if ( loadedZip.getFileByName(_project.backgroundFileName) != null )
+        if (loadedZip.getFileByName(descriptorJSON.backgroundFileName) != null)
         {
             const backgroundJob : LoadByteArrayJob = new LoadByteArrayJob( BACKGROUND_JOB_ID,
-                                                         _project.backgroundFileName,
-                                                         loadedZip.getFileByName(_project.backgroundFileName).content );
+                                                         descriptorJSON.backgroundFileName,
+                                                         loadedZip.getFileByName(descriptorJSON.backgroundFileName).content );
             sequenceLoader.addJob( backgroundJob );
         }
 
@@ -88,28 +79,79 @@ public class SimLoader extends EventDispatcher implements ISimLoader
     {
         sequenceLoader.removeEventListener( Event.COMPLETE, onProjectAssetsLoaded );
 
-        for each (var emitterVO : EmitterValueObject in _project.emitters)
+        for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
-            const job : LoadByteArrayJob = sequenceLoader.getJobByName( emitterVO.id.toString() );
-            emitterVO.image = Bitmap(job.content).bitmapData;
+            var loadedFileName : String = loadedZip.getFileAt(i).filename;
+            if (ZipFileNames.isEmitterXMLName(loadedFileName))
+            {
+                const emitterId : uint = ZipFileNames.getEmitterID(loadedFileName);
+                const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
+                const job : LoadByteArrayJob = sequenceLoader.getJobByName( emitterId.toString() );
+                var snapshot : IZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
+
+                var rawData : RawEmitterData = new RawEmitterData();
+                rawData.emitterID = emitterId;
+                rawData.emitterXML = new XML(stardustBA.readUTFBytes(stardustBA.length));
+                rawData.image = Bitmap(job.content).bitmapData;
+                rawData.snapshot = snapshot ? snapshot.content : null;
+                rawEmitterDatas.push(rawData);
+            }
         }
         if ( sequenceLoader.getJobByName(BACKGROUND_JOB_ID) )
         {
-            _project.backgroundImage = sequenceLoader.getJobByName(BACKGROUND_JOB_ID).content;
-            _project.backgroundRawData = sequenceLoader.getJobByName(BACKGROUND_JOB_ID).byteArray;
+            backgroundImage = sequenceLoader.getJobByName(BACKGROUND_JOB_ID).content;
+            backgroundRawData = sequenceLoader.getJobByName(BACKGROUND_JOB_ID).byteArray;
         }
+        loadedZip = null;
         sequenceLoader.clearAllJobs();
         projectLoaded = true;
         dispatchEvent( new Event(Event.COMPLETE) );
     }
 
-    public function get project() : ProjectValueObject
+    public function createProjectInstance() : ProjectValueObject
     {
-        if (projectLoaded)
+        if (!projectLoaded)
         {
-            return _project;
+            throw new Error("ERROR: Project is not loaded, call loadSim(), and then wait for the Event.COMPLETE event.");
         }
-        return null;
+        var project : ProjectValueObject = new ProjectValueObject(descriptorJSON);
+        for each(var rawData : RawEmitterData in rawEmitterDatas)
+        {
+            const emitterVO : EmitterValueObject = new EmitterValueObject(rawData.emitterID, EmitterBuilder.buildEmitter(rawData.emitterXML));
+            project.emitters[rawData.emitterID] = emitterVO;
+            emitterVO.image = rawData.image.clone();
+            if (rawData.snapshot)
+            {
+                emitterVO.emitterSnapshot = rawData.snapshot;
+                emitterVO.addParticlesFromSnapshot();
+            }
+        }
+        project.backgroundImage = backgroundImage;
+        project.backgroundRawData = backgroundRawData;
+        return project;
     }
+
+    // Call this if you don't want to create more instances of this project to free up its memory.
+    // After calling it createProjectInstance will not work.
+    public function destroy() : void
+    {
+        projectLoaded = false;
+        backgroundImage = null;
+        backgroundRawData = null;
+        descriptorJSON = null;
+        rawEmitterDatas = null;
+    }
+
 }
+}
+
+import flash.display.BitmapData;
+import flash.utils.ByteArray;
+
+class RawEmitterData
+{
+    public var emitterID : uint;
+    public var emitterXML : XML;
+    public var image : BitmapData;
+    public var snapshot : ByteArray;
 }
