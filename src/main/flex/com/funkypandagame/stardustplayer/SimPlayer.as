@@ -69,14 +69,13 @@ public class SimPlayer
 
     public function stepSimulation( numSteps : uint = 1) : void
     {
-        const emitters : Vector.<Emitter2D> = _sim.emittersArr;
-        for each (var emitter : Emitter2D in emitters)
+        for each (var emVO : EmitterValueObject in _sim.emitters)
         {
-            emitter.step( numSteps );
-	        if (emitter.clock is ImpulseClock)
+            emVO.emitter.step( numSteps );
+	        if (emVO.emitter.clock is ImpulseClock)
 	        {
-		        const impulseClock : ImpulseClock = ImpulseClock(emitter.clock);
-		        if (emitter.currentTime % impulseClock.burstInterval == 1)
+		        const impulseClock : ImpulseClock = ImpulseClock(emVO.emitter.clock);
+		        if (emVO.emitter.currentTime % impulseClock.burstInterval == 1)
 		        {
                     impulseClock.impulse();
 		        }
