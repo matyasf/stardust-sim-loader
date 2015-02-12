@@ -8,7 +8,11 @@ import flash.utils.ByteArray;
 
 import flash.utils.Dictionary;
 
+import idv.cjcat.stardustextended.common.particles.Particle;
+
 import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
+import idv.cjcat.stardustextended.twoD.starling.StardustStarlingRenderer;
+import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 public class ProjectValueObject
 {
@@ -77,6 +81,17 @@ public class ProjectValueObject
             emitterValueObject.emitter.clearInitializers();
             emitterValueObject.image = null;
             emitterValueObject.emitterSnapshot = null;
+            if (emitterValueObject.emitter.particleHandler is StarlingHandler)
+            {
+                var renderer : StardustStarlingRenderer = StarlingHandler(emitterValueObject.emitter.particleHandler).renderer;
+                // If this is not called, then Starling can call the render() function of the renderer,
+                // which will try to render with disposed textures.
+                renderer.advanceTime(new Vector.<Particle>());
+                if (renderer.parent)
+                {
+                    renderer.parent.removeChild(renderer);
+                }
+            }
             if (emitterValueObject.texture)
             {
                 emitterValueObject.texture.dispose();

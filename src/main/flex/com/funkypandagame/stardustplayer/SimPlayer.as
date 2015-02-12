@@ -34,6 +34,11 @@ public class SimPlayer
 
     public function setRenderTarget(renderTarget : Object) : void
     {
+        if (renderTarget == null)
+        {
+            throw new Error("renderTarget must be a subclass of flash.display.DisplayObjectContainer or " +
+            "starling.display.DisplayObjectContainer and it can not be null");
+        }
         for each (var emitter : Emitter2D in _sim.emittersArr)
         {
             const handler : ParticleHandler = emitter.particleHandler;
@@ -69,6 +74,10 @@ public class SimPlayer
 
     public function stepSimulation( numSteps : uint = 1) : void
     {
+        if (_sim == null)
+        {
+            throw new Error("No simulation is set")
+        }
         for each (var emVO : EmitterValueObject in _sim.emitters)
         {
             emVO.emitter.step( numSteps );
