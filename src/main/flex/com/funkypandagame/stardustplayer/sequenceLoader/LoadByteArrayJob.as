@@ -5,6 +5,7 @@ import flash.display.DisplayObject;
 import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.events.IOErrorEvent;
 import flash.utils.ByteArray;
 
 public class LoadByteArrayJob extends EventDispatcher
@@ -17,6 +18,7 @@ public class LoadByteArrayJob extends EventDispatcher
     public function LoadByteArrayJob( jobName : String, fileName : String, data : ByteArray )
     {
         _loader = new Loader();
+        _loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, onError );
         _data = data;
         this.jobName = jobName;
         this.fileName = fileName;
@@ -52,10 +54,16 @@ public class LoadByteArrayJob extends EventDispatcher
         }
         catch (err: Error) {}
         _loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, onLoadComplete );
+        _loader.contentLoaderInfo.removeEventListener( IOErrorEvent.IO_ERROR, onError );
         _data = null;
         _loader  = null;
         jobName  = null;
         fileName  = null;
+    }
+
+    private function onError(event : IOErrorEvent) : void
+    {
+        trace("Stardust sim loader: Error loading simulation", event);
     }
 }
 }

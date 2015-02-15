@@ -9,7 +9,6 @@ import com.funkypandagame.stardustplayer.sequenceLoader.LoadByteArrayJob;
 import com.funkypandagame.stardustplayer.sequenceLoader.SequenceLoader;
 
 import flash.display.Bitmap;
-import flash.display.DisplayObject;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
@@ -26,16 +25,13 @@ use namespace sd;
 public class SimLoader extends EventDispatcher implements ISimLoader
 {
     public static const DESCRIPTOR_FILENAME : String = "descriptor.json";
-    private static const BACKGROUND_JOB_ID : String = "backgroundID";
+    public static const BACKGROUND_FILENAME : String = "background.png";
+
     private const sequenceLoader : ISequenceLoader = new SequenceLoader();
     private var projectLoaded : Boolean = false;
-
     private var loadedZip : Zip;
-
     private var descriptorJSON : Object;
     private var rawEmitterDatas : Vector.<RawEmitterData> = new Vector.<RawEmitterData>();
-    private var backgroundImage : DisplayObject;
-    private var backgroundRawData : ByteArray;
 
     /** Loads an .sde file (that is in a byteArray). */
     public function loadSim(data : ByteArray) : void
@@ -48,7 +44,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         descriptorJSON = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
         if (uint(descriptorJSON.version) < 2)
         {
-            trace("Stardust Sim Loader: WARNING This is a simulation created with a old version of the editor, it might not run.");
+            trace("Stardust Sim Loader: WARNING loaded simulation is created with an old version of the editor, it might not run.");
         }
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
@@ -63,14 +59,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 sequenceLoader.addJob( loadImageJob );
             }
         }
-        if (loadedZip.getFileByName(descriptorJSON.backgroundFileName) != null)
-        {
-            const backgroundJob : LoadByteArrayJob = new LoadByteArrayJob( BACKGROUND_JOB_ID,
-                                                         descriptorJSON.backgroundFileName,
-                                                         loadedZip.getFileByName(descriptorJSON.backgroundFileName).content );
-            sequenceLoader.addJob( backgroundJob );
-        }
-
         sequenceLoader.addEventListener( Event.COMPLETE, onProjectAssetsLoaded );
         sequenceLoader.loadSequence();
     }
@@ -97,11 +85,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 rawEmitterDatas.push(rawData);
             }
         }
-        if ( sequenceLoader.getJobByName(BACKGROUND_JOB_ID) )
-        {
-            backgroundImage = sequenceLoader.getJobByName(BACKGROUND_JOB_ID).content;
-            backgroundRawData = sequenceLoader.getJobByName(BACKGROUND_JOB_ID).byteArray;
-        }
         loadedZip = null;
         sequenceLoader.clearAllJobs();
         projectLoaded = true;
@@ -114,7 +97,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         {
             throw new Error("ERROR: Project is not loaded, call loadSim(), and then wait for the Event.COMPLETE event.");
         }
-        var project : ProjectValueObject = new ProjectValueObject(descriptorJSON);
+        var project : ProjectValueObject = new ProjectValueObject(descriptorJSON.version);
         for each(var rawData : RawEmitterData in rawEmitterDatas)
         {
             const emitterVO : EmitterValueObject = new EmitterValueObject(rawData.emitterID, EmitterBuilder.buildEmitter(rawData.emitterXML));
@@ -126,8 +109,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 emitterVO.addParticlesFromSnapshot();
             }
         }
-        project.backgroundImage = backgroundImage;
-        project.backgroundRawData = backgroundRawData;
         return project;
     }
 
@@ -136,8 +117,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
     public function destroy() : void
     {
         projectLoaded = false;
-        backgroundImage = null;
-        backgroundRawData = null;
         descriptorJSON = null;
         rawEmitterDatas = null;
     }

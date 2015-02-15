@@ -14,8 +14,6 @@ import flash.utils.ByteArray;
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 import idv.cjcat.stardustextended.common.clocks.SteadyClock;
 
-import idv.cjcat.stardustextended.sd;
-
 import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
 import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
 
@@ -25,8 +23,6 @@ import org.flexunit.asserts.assertNotNull;
 import org.flexunit.asserts.assertTrue;
 
 import org.flexunit.async.Async;
-
-use namespace sd;
 
 public class SimLoaderTest
 {
@@ -46,12 +42,6 @@ public class SimLoaderTest
     {
         const sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
         assertEquals( 2, sim.version );
-        assertEquals( 0, sim.backgroundColor );
-        assertEquals( false, sim.hasBackground );
-        assertEquals( null, sim.backgroundFileName );
-        assertEquals( null, sim.backgroundImage );
-        assertEquals( null, sim.backgroundRawData );
-
         assertEquals( 2, sim.numberOfEmitters );
     }
 

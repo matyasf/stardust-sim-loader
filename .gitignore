@@ -3,6 +3,7 @@ stardust-sim-player.iml
 .gradle/*
 build/*
 !build/stardust-sim-loader.swc
+!build/poms/pom-default.swc
 *.iml
 .idea/*
 bin-debug/*
