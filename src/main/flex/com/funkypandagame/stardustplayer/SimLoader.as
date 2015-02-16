@@ -14,6 +14,8 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.utils.ByteArray;
 
+import idv.cjcat.stardustextended.Stardust;
+
 import idv.cjcat.stardustextended.sd;
 
 import org.as3commons.zip.IZipFile;
@@ -42,7 +44,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         loadedZip = new Zip();
         loadedZip.loadBytes( data );
         descriptorJSON = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
-        if (uint(descriptorJSON.version) < 2)
+        if (uint(descriptorJSON.version) < Stardust.VERSION)
         {
             trace("Stardust Sim Loader: WARNING loaded simulation is created with an old version of the editor, it might not run.");
         }
