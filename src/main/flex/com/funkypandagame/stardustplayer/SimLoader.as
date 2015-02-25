@@ -44,6 +44,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         loadedZip = new Zip();
         loadedZip.loadBytes( data );
         descriptorJSON = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
+        if (descriptorJSON == null)
+        {
+            throw new Error("Descriptor JSON not found in the simulation ByteArray.");
+        }
         if (uint(descriptorJSON.version) < Stardust.VERSION)
         {
             trace("Stardust Sim Loader: WARNING loaded simulation is created with an old version of the editor, it might not run.");

@@ -5,11 +5,15 @@ import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 
 import flash.utils.Dictionary;
 
+import idv.cjcat.stardustextended.common.initializers.Initializer;
+
 import idv.cjcat.stardustextended.common.particles.Particle;
 
 import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
+import idv.cjcat.stardustextended.twoD.initializers.PositionAnimated;
 import idv.cjcat.stardustextended.twoD.starling.StardustStarlingRenderer;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
+import idv.cjcat.stardustextended.twoD.zones.Zone;
 
 public class ProjectValueObject
 {
@@ -52,6 +56,33 @@ public class ProjectValueObject
         }
         return emitterVec;
     }
+
+    /** Convenience function to get all initial positions */
+    public function get initialPositions() : Vector.<Zone>
+    {
+        var zones : Vector.<Zone> = new Vector.<Zone>();
+        for each (var emitter2D : Emitter2D in emittersArr)
+        {
+            for each (var init : Initializer in emitter2D.initializers)
+            {
+                if (init is PositionAnimated)
+                {
+                    zones.push(init);
+                }
+            }
+        }
+        return zones;
+    }
+
+    /** Removes all particles and puts the simulation back to its initial state. */
+    public function resetSimulation() : void
+    {
+        for each (var emitterValueObject : EmitterValueObject in emitters)
+        {
+            emitterValueObject.emitter.reset();
+        }
+    }
+
     /** The simulation will be unusable after calling this method. Note that this disposes StarlingHandler's texture. */
     public function destroy() : void
     {

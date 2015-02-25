@@ -92,13 +92,5 @@ public class SimPlayer
         }
     }
 
-    public function resetSimulation() : void
-    {
-        for each (var emitterValueObject : EmitterValueObject in _sim.emitters)
-        {
-            emitterValueObject.emitter.reset();
-        }
-    }
-
 }
 }
