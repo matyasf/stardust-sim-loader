@@ -30,10 +30,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
     public static const BACKGROUND_FILENAME : String = "background.png";
 
     private const sequenceLoader : ISequenceLoader = new SequenceLoader();
-    private var projectLoaded : Boolean = false;
-    private var loadedZip : Zip;
-    private var descriptorJSON : Object;
-    private var rawEmitterDatas : Vector.<RawEmitterData> = new Vector.<RawEmitterData>();
+    protected var projectLoaded : Boolean = false;
+    protected var loadedZip : Zip;
+    protected var descriptorJSON : Object;
+    protected var rawEmitterDatas : Vector.<RawEmitterData> = new Vector.<RawEmitterData>();
 
     /** Loads an .sde file (that is in a byteArray). */
     public function loadSim(data : ByteArray) : void

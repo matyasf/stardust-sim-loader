@@ -24,7 +24,7 @@ import starling.display.QuadBatch;
 /** Simple class to play back simulations. If you need something more custom write your own. */
 public class SimPlayer
 {
-    private var _sim : ProjectValueObject;
+    protected var _sim : ProjectValueObject;
 
     public function setSimulation( sim : ProjectValueObject, renderTarget : Object ) : void
     {

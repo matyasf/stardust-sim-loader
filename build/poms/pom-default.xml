@@ -9,7 +9,7 @@
     <dependency>
       <groupId>com.funkypandagame</groupId>
       <artifactId>stardust-library</artifactId>
-      <version>3.7</version>
+      <version>3.8</version>
       <type>swc</type>
     </dependency>
   </dependencies>
