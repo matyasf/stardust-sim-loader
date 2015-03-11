@@ -16,6 +16,9 @@ import idv.cjcat.stardustextended.common.clocks.SteadyClock;
 
 import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
 import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
+import idv.cjcat.stardustextended.twoD.zones.Line;
+
+import org.flexunit.assertThat;
 
 import org.flexunit.asserts.assertEquals;
 import org.flexunit.asserts.assertFalse;
@@ -57,6 +60,9 @@ public class SimLoaderTest
     {
         var sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
         assertEquals( 2, sim.numberOfEmitters );
+        assertEquals( 2, sim.initialPositions.length );
+        assertThat( sim.initialPositions[0] is Line );
+        assertThat( sim.initialPositions[1] is Line );
 
         const emitter0 : EmitterValueObject = sim.emitters[0];
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter0.emitter.particleHandler).blendMode );

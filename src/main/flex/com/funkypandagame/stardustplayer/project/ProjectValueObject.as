@@ -67,7 +67,7 @@ public class ProjectValueObject
             {
                 if (init is PositionAnimated)
                 {
-                    zones.push(init);
+                    zones.push(PositionAnimated(init).zone);
                 }
             }
         }
