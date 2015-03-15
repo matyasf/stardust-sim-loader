@@ -23,6 +23,12 @@ public class Particle2DSnapshot {
     public var colorR:Number;
     public var colorG:Number;
     public var colorB:Number;
+    public var initColorR:Number;
+    public var initColorG:Number;
+    public var initColorB:Number;
+    public var endColorR:Number;
+    public var endColorG:Number;
+    public var endColorB:Number;
     public var currentAnimationFrame : int;
 
     public function storeParticle(p2d : Particle2D) : void
@@ -46,6 +52,12 @@ public class Particle2DSnapshot {
         colorR = p2d.colorR;
         colorG = p2d.colorG;
         colorB = p2d.colorB;
+        initColorR = p2d.initColorR;
+        initColorG = p2d.initColorG;
+        initColorB = p2d.initColorB;
+        endColorR = p2d.endColorR;
+        endColorG = p2d.endColorG;
+        endColorB = p2d.endColorB;
         currentAnimationFrame = p2d.currentAnimationFrame;
     }
 
