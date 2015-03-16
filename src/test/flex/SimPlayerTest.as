@@ -37,7 +37,8 @@ public class SimPlayerTest
 
         const player : SimPlayer = new SimPlayer();
 
-        player.setSimulation( sim, new Sprite());
+        player.setProject( sim );
+        player.setRenderTarget( new Sprite());
 
         player.stepSimulation();
         player.stepSimulation();
@@ -71,7 +72,8 @@ public class SimPlayerTest
 
         const player : SimPlayer = new SimPlayer();
 
-        player.setSimulation( sim, new Sprite());
+        player.setProject( sim );
+        player.setRenderTarget( new Sprite());
 
         player.stepSimulation();
         assertEquals( 1, EmitterValueObject(sim.emitters[0]).emitter.currentTime );

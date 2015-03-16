@@ -25,11 +25,23 @@ import starling.display.QuadBatch;
 public class SimPlayer
 {
     protected var _sim : ProjectValueObject;
+    protected var _renderTarget : Object;
 
+    [Deprecated(message="Use setProject() and setRenderTarget() instead")]
     public function setSimulation( sim : ProjectValueObject, renderTarget : Object ) : void
     {
-        _sim = sim;
+        setProject(sim);
         setRenderTarget(renderTarget);
+    }
+
+    public function setProject(sim : ProjectValueObject) : void
+    {
+        if (sim == null)
+        {
+            throw new Error("A simulation can not be null");
+        }
+        _sim = sim;
+        setupSimulation();
     }
 
     public function setRenderTarget(renderTarget : Object) : void
@@ -39,34 +51,45 @@ public class SimPlayer
             throw new Error("renderTarget must be a subclass of flash.display.DisplayObjectContainer or " +
             "starling.display.DisplayObjectContainer and it can not be null");
         }
+        _renderTarget = renderTarget;
+        setupSimulation();
+    }
+
+    protected function setupSimulation() : void
+    {
+        if (_renderTarget == null || _sim == null)
+        {
+            return;
+        }
         for each (var emitter : Emitter2D in _sim.emittersArr)
         {
             const handler : ParticleHandler = emitter.particleHandler;
             if (handler is DisplayObjectHandler)
             {
-                DisplayObjectHandler(handler).container = renderTarget as DisplayObjectContainer;
+                DisplayObjectHandler(handler).container = _renderTarget as DisplayObjectContainer;
             }
             if (handler is DisplayObjectSpriteSheetHandler)
             {
-                DisplayObjectSpriteSheetHandler(handler).container = renderTarget as DisplayObjectContainer;
+                DisplayObjectSpriteSheetHandler(handler).container = _renderTarget as DisplayObjectContainer;
             }
             else if (handler is BitmapHandler)
             {
-                BitmapHandler(handler).targetBitmapData = BitmapData(renderTarget);
+                BitmapHandler(handler).targetBitmapData = BitmapData(_renderTarget);
             }
             else if (handler is SingularBitmapHandler)
             {
-                SingularBitmapHandler(handler).targetBitmapData = BitmapData(renderTarget);
+                SingularBitmapHandler(handler).targetBitmapData = BitmapData(_renderTarget);
             }
             else if (handler is PixelHandler)
             {
-                PixelHandler(handler).targetBitmapData = BitmapData(renderTarget);
+                PixelHandler(handler).targetBitmapData = BitmapData(_renderTarget);
             }
             else if (handler is StarlingHandler)
             {
-                StarlingHandler(handler).container = renderTarget as starling.display.DisplayObjectContainer;
+                StarlingHandler(handler).container = _renderTarget as starling.display.DisplayObjectContainer;
             }
-            else {
+            else
+            {
                 throw new Error("Unknown particle handler " + handler);
             }
         }
@@ -74,9 +97,9 @@ public class SimPlayer
 
     public function stepSimulation( numSteps : uint = 1) : void
     {
-        if (_sim == null)
+        if (_sim == null || _renderTarget == null)
         {
-            throw new Error("No simulation is set")
+            throw new Error("The simulation and its render target must be set.");
         }
         for each (var emVO : EmitterValueObject in _sim.emitters)
         {
