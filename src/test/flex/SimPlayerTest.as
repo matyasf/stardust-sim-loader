@@ -104,7 +104,8 @@ public class SimPlayerTest
 
         const canvas : Sprite = new Sprite();
 
-        player.setSimulation( sim, canvas);
+        player.setProject( sim );
+        player.setRenderTarget( canvas );
 
         assertEquals( canvas, DisplayObjectHandler(EmitterValueObject(sim.emitters[0]).emitter.particleHandler).container );
         assertEquals( canvas, DisplayObjectHandler(EmitterValueObject(sim.emitters[1]).emitter.particleHandler).container );

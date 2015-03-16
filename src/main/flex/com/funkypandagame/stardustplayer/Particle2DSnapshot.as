@@ -1,7 +1,7 @@
 package com.funkypandagame.stardustplayer
 {
 import idv.cjcat.stardustextended.twoD.particles.Particle2D;
-
+// TODO could be a dynamic class that writes only the needed properties, but it might be slow
 public class Particle2DSnapshot {
 
     public var x:Number;
@@ -33,32 +33,38 @@ public class Particle2DSnapshot {
 
     public function storeParticle(p2d : Particle2D) : void
     {
-        x = p2d.x;
-        y = p2d.y;
-        vx = p2d.vx;
-        vy = p2d.vy;
-        rotation = p2d.rotation;
-        omega = p2d.omega;
-        initLife = p2d.initLife;
-        initScale = p2d.initScale;
-        initAlpha = p2d.initAlpha;
-        life = p2d.life;
-        scale = p2d.scale;
-        alpha = p2d.alpha;
-        mass = p2d.mass;
+        x = toLowPrecision(p2d.x);
+        y = toLowPrecision(p2d.y);
+        vx = toLowPrecision(p2d.vx);
+        vy = toLowPrecision(p2d.vy);
+        rotation = toLowPrecision(p2d.rotation);
+        omega = toLowPrecision(p2d.omega);
+        initLife = toLowPrecision(p2d.initLife);
+        initScale = toLowPrecision(p2d.initScale);
+        initAlpha = toLowPrecision(p2d.initAlpha);
+        life = toLowPrecision(p2d.life);
+        scale = toLowPrecision(p2d.scale);
+        alpha = toLowPrecision(p2d.alpha);
+        mass = toLowPrecision(p2d.mass);
         mask = p2d.mask;
         isDead = p2d.isDead;
 //        collisionRadius = p2d.collisionRadius;
-        colorR = p2d.colorR;
-        colorG = p2d.colorG;
-        colorB = p2d.colorB;
-        initColorR = p2d.initColorR;
-        initColorG = p2d.initColorG;
-        initColorB = p2d.initColorB;
-        endColorR = p2d.endColorR;
-        endColorG = p2d.endColorG;
-        endColorB = p2d.endColorB;
+        colorR = toLowPrecision(p2d.colorR);
+        colorG = toLowPrecision(p2d.colorG);
+        colorB = toLowPrecision(p2d.colorB);
+        initColorR = toLowPrecision(p2d.initColorR);
+        initColorG = toLowPrecision(p2d.initColorG);
+        initColorB = toLowPrecision(p2d.initColorB);
+        endColorR = toLowPrecision(p2d.endColorR);
+        endColorG = toLowPrecision(p2d.endColorG);
+        endColorB = toLowPrecision(p2d.endColorB);
         currentAnimationFrame = p2d.currentAnimationFrame;
+    }
+
+    // round to the last 3 decimals, this improves compression
+    private static function toLowPrecision(num : Number) : Number
+    {
+        return int(num * 1000) * 0.001;
     }
 
     public function writeDataTo(p2d : Particle2D) : void
@@ -82,6 +88,12 @@ public class Particle2DSnapshot {
         p2d.colorR = colorR;
         p2d.colorG = colorG;
         p2d.colorB = colorB;
+        p2d.initColorR = initColorR;
+        p2d.initColorG = initColorG;
+        p2d.initColorB = initColorB;
+        p2d.endColorR = endColorR;
+        p2d.endColorG = endColorG;
+        p2d.endColorB = endColorB;
         p2d.currentAnimationFrame = currentAnimationFrame;
     }
 }
