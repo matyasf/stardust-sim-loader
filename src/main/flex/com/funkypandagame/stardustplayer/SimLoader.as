@@ -120,11 +120,18 @@ public class SimLoader extends EventDispatcher implements ISimLoader
 
     // Call this if you don't want to create more instances of this project to free up its memory.
     // After calling it createProjectInstance will not work.
-    public function destroy() : void
+    public function dispose() : void
     {
         projectLoaded = false;
         descriptorJSON = null;
-        rawEmitterDatas = null;
+        for each (var rawEmitterData:RawEmitterData in rawEmitterDatas) {
+            rawEmitterData.image.dispose();
+            if (rawEmitterData.snapshot)
+            {
+                rawEmitterData.snapshot.clear();
+            }
+        }
+        rawEmitterDatas = new Vector.<RawEmitterData>();
     }
 
 }
