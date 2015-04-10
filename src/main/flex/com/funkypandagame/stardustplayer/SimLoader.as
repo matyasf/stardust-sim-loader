@@ -16,13 +16,9 @@ import flash.utils.ByteArray;
 
 import idv.cjcat.stardustextended.Stardust;
 
-import idv.cjcat.stardustextended.sd;
-
 import org.as3commons.zip.IZipFile;
 
 import org.as3commons.zip.Zip;
-
-use namespace sd;
 
 public class SimLoader extends EventDispatcher implements ISimLoader
 {

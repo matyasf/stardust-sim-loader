@@ -10,8 +10,6 @@ import flash.utils.getQualifiedClassName;
 
 import idv.cjcat.stardustextended.common.particles.Particle;
 
-import idv.cjcat.stardustextended.sd;
-
 import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
 import idv.cjcat.stardustextended.twoD.handlers.ISpriteSheetHandler;
 import idv.cjcat.stardustextended.twoD.particles.Particle2D;
@@ -19,8 +17,6 @@ import idv.cjcat.stardustextended.twoD.particles.PooledParticle2DFactory;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.textures.Texture;
-
-use namespace sd;
 
 public class EmitterValueObject
 {
