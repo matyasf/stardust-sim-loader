@@ -11,7 +11,7 @@ import flash.events.Event;
 
 import flash.utils.ByteArray;
 
-import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
+import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectHandler;
 
 import org.flexunit.asserts.assertEquals;
 import org.flexunit.async.Async;

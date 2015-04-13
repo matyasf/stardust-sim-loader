@@ -1,6 +1,6 @@
 package com.funkypandagame.stardustplayer
 {
-import idv.cjcat.stardustextended.twoD.particles.Particle2D;
+import idv.cjcat.stardustextended.common.particles.Particle;
 // TODO could be a dynamic class that writes only the needed properties, but it might be slow
 public class Particle2DSnapshot {
 
@@ -31,7 +31,7 @@ public class Particle2DSnapshot {
     public var endColorB:Number;
     public var currentAnimationFrame : int;
 
-    public function storeParticle(p2d : Particle2D) : void
+    public function storeParticle(p2d : Particle) : void
     {
         x = toLowPrecision(p2d.x);
         y = toLowPrecision(p2d.y);
@@ -67,7 +67,7 @@ public class Particle2DSnapshot {
         return int(num * 1000) * 0.001;
     }
 
-    public function writeDataTo(p2d : Particle2D) : void
+    public function writeDataTo(p2d : Particle) : void
     {
         p2d.x = x;
         p2d.y = y;

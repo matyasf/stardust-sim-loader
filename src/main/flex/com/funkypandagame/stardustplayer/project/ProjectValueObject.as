@@ -5,11 +5,11 @@ import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 
 import flash.utils.Dictionary;
 
-import idv.cjcat.stardustextended.common.initializers.Initializer;
+import idv.cjcat.stardustextended.common.emitters.Emitter;
 
+import idv.cjcat.stardustextended.common.initializers.Initializer;
 import idv.cjcat.stardustextended.common.particles.Particle;
 
-import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
 import idv.cjcat.stardustextended.twoD.initializers.PositionAnimated;
 import idv.cjcat.stardustextended.twoD.starling.StardustStarlingRenderer;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
@@ -47,9 +47,9 @@ public class ProjectValueObject
     }
 
     /** Convenience function to get all emitters */
-    public function get emittersArr() : Vector.<Emitter2D>
+    public function get emittersArr() : Vector.<Emitter>
     {
-        const emitterVec : Vector.<Emitter2D> = new Vector.<Emitter2D>();
+        const emitterVec : Vector.<Emitter> = new Vector.<Emitter>();
         for each (var emVO : EmitterValueObject in emitters)
         {
             emitterVec.push(emVO.emitter);
@@ -61,9 +61,9 @@ public class ProjectValueObject
     public function get initialPositions() : Vector.<Zone>
     {
         var zones : Vector.<Zone> = new Vector.<Zone>();
-        for each (var emitter2D : Emitter2D in emittersArr)
+        for each (var emitter : Emitter in emittersArr)
         {
-            for each (var init : Initializer in emitter2D.initializers)
+            for each (var init : Initializer in emitter.initializers)
             {
                 if (init is PositionAnimated)
                 {

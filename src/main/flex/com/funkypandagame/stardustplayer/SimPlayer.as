@@ -9,14 +9,14 @@ import flash.display.BitmapData;
 import flash.display.DisplayObjectContainer;
 
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
+import idv.cjcat.stardustextended.common.emitters.Emitter;
 
 import idv.cjcat.stardustextended.common.handlers.ParticleHandler;
-import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
-import idv.cjcat.stardustextended.twoD.handlers.BitmapHandler;
-import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
-import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectSpriteSheetHandler;
+import idv.cjcat.stardustextended.flashdisplay.handlers.BitmapHandler;
+import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectHandler;
+import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectSpriteSheetHandler;
 import idv.cjcat.stardustextended.twoD.handlers.PixelHandler;
-import idv.cjcat.stardustextended.twoD.handlers.SingularBitmapHandler;
+import idv.cjcat.stardustextended.flashdisplay.handlers.SingularBitmapHandler;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.display.QuadBatch;
@@ -61,7 +61,7 @@ public class SimPlayer
         {
             return;
         }
-        for each (var emitter : Emitter2D in _sim.emittersArr)
+        for each (var emitter : Emitter in _sim.emittersArr)
         {
             const handler : ParticleHandler = emitter.particleHandler;
             if (handler is DisplayObjectHandler)

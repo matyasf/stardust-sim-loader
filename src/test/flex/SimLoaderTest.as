@@ -13,9 +13,9 @@ import flash.utils.ByteArray;
 
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 import idv.cjcat.stardustextended.common.clocks.SteadyClock;
+import idv.cjcat.stardustextended.common.emitters.Emitter;
 
-import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
-import idv.cjcat.stardustextended.twoD.handlers.DisplayObjectHandler;
+import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectHandler;
 import idv.cjcat.stardustextended.twoD.zones.Line;
 
 import org.flexunit.assertThat;
@@ -96,7 +96,7 @@ public class SimLoaderTest
     private function emitters_areParsedCorrectly_loaded( event : Event, passThroughData : Object) : void
     {
         var sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
-        const emitter0 : Emitter2D = EmitterValueObject(sim.emitters[0]).emitter;
+        const emitter0 : Emitter = EmitterValueObject(sim.emitters[0]).emitter;
         assertEquals( 3, emitter0.actions.length );
         assertEquals( 3, emitter0.initializers.length );
         assertEquals( 34, ImpulseClock(emitter0.clock ).impulseCount );
@@ -104,7 +104,7 @@ public class SimLoaderTest
         assertTrue( (emitter0.particleHandler is DisplayObjectHandler) );
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter0.particleHandler ).blendMode );
 
-        const emitter1 : Emitter2D = EmitterValueObject(sim.emitters[1] ).emitter;
+        const emitter1 : Emitter = EmitterValueObject(sim.emitters[1] ).emitter;
         assertEquals( 3, emitter1.actions.length );
         assertEquals( 3, emitter1.initializers.length );
         assertEquals( 1, SteadyClock(emitter1.clock ).ticksPerCall );

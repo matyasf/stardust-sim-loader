@@ -8,26 +8,26 @@ import flash.net.registerClassAlias;
 import flash.utils.ByteArray;
 import flash.utils.getQualifiedClassName;
 
-import idv.cjcat.stardustextended.common.particles.Particle;
+import idv.cjcat.stardustextended.common.emitters.Emitter;
 
-import idv.cjcat.stardustextended.twoD.emitters.Emitter2D;
+import idv.cjcat.stardustextended.common.particles.Particle;
+import idv.cjcat.stardustextended.common.particles.PooledParticleFactory;
+
 import idv.cjcat.stardustextended.twoD.handlers.ISpriteSheetHandler;
-import idv.cjcat.stardustextended.twoD.particles.Particle2D;
-import idv.cjcat.stardustextended.twoD.particles.PooledParticle2DFactory;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.textures.Texture;
 
 public class EmitterValueObject
 {
-    public var emitter : Emitter2D;
+    public var emitter : Emitter;
     /** Snapshot of the particles. If its not null then the emitter will have the particles here upon creation. */
     public var emitterSnapshot : ByteArray;
     private var _id : uint;
     private var _image : BitmapData;
 
 
-    public function EmitterValueObject( emitterId : uint, _emitter : Emitter2D )
+    public function EmitterValueObject( emitterId : uint, _emitter : Emitter )
     {
         emitter = _emitter;
         _id = emitterId;
@@ -69,11 +69,10 @@ public class EmitterValueObject
         registerClassAlias(getQualifiedClassName(Particle2DSnapshot), Particle2DSnapshot);
         emitterSnapshot.position = 0;
         var particlesData : Array = emitterSnapshot.readObject();
-        var factory : PooledParticle2DFactory = new PooledParticle2DFactory();
+        var factory : PooledParticleFactory = new PooledParticleFactory();
         var particles:Vector.<Particle> = factory.createParticles(particlesData.length, 0);
         for (var j:int = 0; j < particlesData.length; j++) {
-            var particle:Particle2D = Particle2D(particles[j]);
-            Particle2DSnapshot(particlesData[j]).writeDataTo(particle);
+            Particle2DSnapshot(particlesData[j]).writeDataTo(particles[j]);
         }
         emitter.addParticles(particles);
     }
