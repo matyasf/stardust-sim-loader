@@ -91,7 +91,6 @@ public class ProjectValueObject
             emitterValueObject.emitter.clearParticles();
             emitterValueObject.emitter.clearActions();
             emitterValueObject.emitter.clearInitializers();
-            emitterValueObject.image = null;
             emitterValueObject.emitterSnapshot = null;
             if (emitterValueObject.emitter.particleHandler is StarlingHandler)
             {
@@ -106,7 +105,7 @@ public class ProjectValueObject
             }
             if (emitterValueObject.texture)
             {
-                emitterValueObject.texture.dispose();
+                emitterValueObject.texture[0].root.dispose();
             }
             delete emitters[emitterValueObject.id];
         }

@@ -1,7 +1,7 @@
 package
 {
 import com.funkypandagame.stardustplayer.SimLoader;
-import com.funkypandagame.stardustplayer.ZipFileNames;
+import com.funkypandagame.stardustplayer.SDEConstants;
 import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 
@@ -70,8 +70,8 @@ public class SimLoaderTest
         assertNotNull( emitter0.emitter );
         assertEquals( 0, emitter0.id );
         assertNotNull( emitter0.image );
-        assertEquals( "stardustEmitter_0.xml", ZipFileNames.getXMLName(emitter0.id) );
-        assertEquals( "emitterImage_0.png", ZipFileNames.getImageName(emitter0.id) );
+        assertEquals( "stardustEmitter_0.xml", SDEConstants.getXMLName(emitter0.id) );
+        assertEquals( "emitterImage_0.png", SDEConstants.getImageName(emitter0.id) );
 
         const emitter1 : EmitterValueObject = sim.emitters[1];
         assertEquals( BlendMode.NORMAL, DisplayObjectHandler(emitter1.emitter.particleHandler).blendMode );
@@ -79,8 +79,8 @@ public class SimLoaderTest
         assertNotNull( emitter1.emitter );
         assertEquals( 1, emitter1.id );
         assertNotNull( emitter1.image );
-        assertEquals( "stardustEmitter_1.xml", ZipFileNames.getXMLName(emitter1.id) );
-        assertEquals( "emitterImage_1.png", ZipFileNames.getImageName(emitter1.id) );
+        assertEquals( "stardustEmitter_1.xml", SDEConstants.getXMLName(emitter1.id) );
+        assertEquals( "emitterImage_1.png", SDEConstants.getImageName(emitter1.id) );
 
         assertFalse( (emitter0.image == emitter1.image) );
     }

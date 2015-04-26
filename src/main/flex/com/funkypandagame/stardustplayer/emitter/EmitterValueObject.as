@@ -3,7 +3,6 @@ package com.funkypandagame.stardustplayer.emitter
 
 import com.funkypandagame.stardustplayer.Particle2DSnapshot;
 
-import flash.display.BitmapData;
 import flash.net.registerClassAlias;
 import flash.utils.ByteArray;
 import flash.utils.getQualifiedClassName;
@@ -13,8 +12,9 @@ import idv.cjcat.stardustextended.common.emitters.Emitter;
 import idv.cjcat.stardustextended.common.particles.Particle;
 import idv.cjcat.stardustextended.common.particles.PooledParticleFactory;
 
-import idv.cjcat.stardustextended.twoD.handlers.ISpriteSheetHandler;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
+
+import starling.textures.SubTexture;
 
 import starling.textures.Texture;
 
@@ -24,8 +24,6 @@ public class EmitterValueObject
     /** Snapshot of the particles. If its not null then the emitter will have the particles here upon creation. */
     public var emitterSnapshot : ByteArray;
     private var _id : uint;
-    private var _image : BitmapData;
-
 
     public function EmitterValueObject( emitterId : uint, _emitter : Emitter )
     {
@@ -38,28 +36,11 @@ public class EmitterValueObject
         return _id;
     }
 
-    [Deprecated(message="This property will be soon removed, use setTextures() instead")]
-    public function get image() : BitmapData
-    {
-        return _image;
-    }
-
-    [Deprecated(message="This property will be soon removed, use setTextures() instead")]
-    public function set image(imageBD : BitmapData) : void
-    {
-        _image = imageBD;
-        if (emitter.particleHandler is ISpriteSheetHandler)
-        {
-            ISpriteSheetHandler(emitter.particleHandler).bitmapData = imageBD;
-        }
-    }
-
-    [Deprecated(message="This property will be soon removed, use setTextures() instead")]
-    public function get texture():Texture
+    public function get texture() : Vector.<SubTexture>
     {
         if (emitter.particleHandler is StarlingHandler)
         {
-            return StarlingHandler(emitter.particleHandler).texture;
+            return StarlingHandler(emitter.particleHandler).textures;
         }
         return null;
     }

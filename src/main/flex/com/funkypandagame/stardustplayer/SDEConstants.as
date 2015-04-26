@@ -1,6 +1,7 @@
 package com.funkypandagame.stardustplayer {
 
-public class ZipFileNames {
+public class SDEConstants
+{
 
     private static const EMITTER_NAME_PREFIX : String = "stardustEmitter_";
     private static const ATLAS_NAME_PREFIX : String = "atlas_";
@@ -44,6 +45,12 @@ public class ZipFileNames {
     {
         return (filename.substr(0,6) == ATLAS_NAME_PREFIX &&
                 filename.substr(filename.length - 4, filename.length) == ".png");
+    }
+
+    // the names of the subtextures in the atlas
+    public static function getSubTexturePrefix(emitterId : uint) : String
+    {
+        return "emitter_" + emitterId + "_image_";
     }
 }
 }

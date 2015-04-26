@@ -1,7 +1,7 @@
 package com.funkypandagame.stardustplayer
 {
 import idv.cjcat.stardustextended.common.particles.Particle;
-// TODO could be a dynamic class that writes only the needed properties, but it might be slow
+// could be a dynamic class that writes only the needed properties, but it might be slow
 public class Particle2DSnapshot {
 
     public var x:Number;
@@ -23,12 +23,20 @@ public class Particle2DSnapshot {
     public var colorR:Number;
     public var colorG:Number;
     public var colorB:Number;
+
+    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
     public var initColorR:Number;
+    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
     public var initColorG:Number;
+    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
     public var initColorB:Number;
+    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
     public var endColorR:Number;
+    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
     public var endColorG:Number;
+    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
     public var endColorB:Number;
+
     public var currentAnimationFrame : int;
 
     public function storeParticle(p2d : Particle) : void

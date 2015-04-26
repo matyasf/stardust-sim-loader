@@ -33,7 +33,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
 {
     public static const DESCRIPTOR_FILENAME : String = "descriptor.json";
     public static const BACKGROUND_FILENAME : String = "background.png";
-    public static const SUBTEXTURE_PREFIX : String = "emitter_";
 
     private const sequenceLoader : ISequenceLoader = new SequenceLoader();
     protected var projectLoaded : Boolean = false;
@@ -72,13 +71,13 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (ZipFileNames.isEmitterXMLName(loadedFileName))
+            if (SDEConstants.isEmitterXMLName(loadedFileName))
             {
-                var emitterId : uint = ZipFileNames.getEmitterID(loadedFileName);
+                var emitterId : uint = SDEConstants.getEmitterID(loadedFileName);
                 const loadImageJob : LoadByteArrayJob = new LoadByteArrayJob(
                         emitterId.toString(),
-                        ZipFileNames.getImageName(emitterId),
-                        loadedZip.getFileByName(ZipFileNames.getImageName(emitterId)).content );
+                        SDEConstants.getImageName(emitterId),
+                        loadedZip.getFileByName(SDEConstants.getImageName(emitterId)).content );
                 sequenceLoader.addJob( loadImageJob );
             }
         }
@@ -92,7 +91,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (ZipFileNames.isAtlasImageName(loadedFileName))
+            if (SDEConstants.isAtlasImageName(loadedFileName))
             {
                 hasAtlas = true;
                 var loadAtlasJob : LoadByteArrayJob = new LoadByteArrayJob(
@@ -122,11 +121,11 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for (var i : int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (ZipFileNames.isEmitterXMLName(loadedFileName))
+            if (SDEConstants.isEmitterXMLName(loadedFileName))
             {
-                const emitterId : uint = ZipFileNames.getEmitterID(loadedFileName);
+                const emitterId : uint = SDEConstants.getEmitterID(loadedFileName);
                 const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
-                var snapshot : IZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
+                var snapshot : IZipFile = loadedZip.getFileByName(SDEConstants.getParticleSnapshotName(emitterId));
 
                 var rawData : RawEmitterData = new RawEmitterData();
                 rawData.emitterID = emitterId;
@@ -149,12 +148,12 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (ZipFileNames.isEmitterXMLName(loadedFileName))
+            if (SDEConstants.isEmitterXMLName(loadedFileName))
             {
-                const emitterId : uint = ZipFileNames.getEmitterID(loadedFileName);
+                const emitterId : uint = SDEConstants.getEmitterID(loadedFileName);
                 const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
                 const job : LoadByteArrayJob = sequenceLoader.getJobByName( emitterId.toString() );
-                var snapshot : IZipFile = loadedZip.getFileByName(ZipFileNames.getParticleSnapshotName(emitterId));
+                var snapshot : IZipFile = loadedZip.getFileByName(SDEConstants.getParticleSnapshotName(emitterId));
 
                 var rawData : RawEmitterData = new RawEmitterData();
                 rawData.emitterID = emitterId;
@@ -188,10 +187,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
             }
             if (emitterVO.emitter.particleHandler is StarlingHandler)
             {
-                trace("Stardust: Deprecated sde file. Load and save in the editor to convert it to the new format.");
                 var allTextures : Vector.<SubTexture> = new Vector.<SubTexture>();
                 if (rawData.image)
                 {
+                    trace("Stardust: Deprecated sde file. Load and save in the editor to convert it to the new format.");
                     var handler : StarlingHandler = StarlingHandler(emitterVO.emitter.particleHandler);
                     var spWidth : uint = handler.spriteSheetSliceWidth;
                     var spHeight : uint = handler.spriteSheetSliceHeight;
@@ -220,11 +219,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                         var subTex : SubTexture = new SubTexture(Texture.fromBitmapData(rawData.image.clone(), false), null);
                         allTextures.push(subTex);
                     }
-
                 }
                 else if (atlas)
                 {
-                    var textures : Vector.<Texture> = atlas.getTextures(SUBTEXTURE_PREFIX + emitterVO.id.toString());
+                    var textures : Vector.<Texture> = atlas.getTextures(SDEConstants.getSubTexturePrefix(emitterVO.id));
                     if (textures)
                     {
                         for each (var subTexture : SubTexture in textures)
