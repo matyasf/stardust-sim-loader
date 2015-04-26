@@ -9,7 +9,6 @@ import flash.display.BitmapData;
 import flash.display.DisplayObjectContainer;
 
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
-import idv.cjcat.stardustextended.common.emitters.Emitter;
 
 import idv.cjcat.stardustextended.common.handlers.ParticleHandler;
 import idv.cjcat.stardustextended.flashdisplay.handlers.BitmapHandler;
@@ -61,9 +60,9 @@ public class SimPlayer
         {
             return;
         }
-        for each (var emitter : Emitter in _sim.emittersArr)
+        for each (var emitter : EmitterValueObject in _sim.emitters)
         {
-            const handler : ParticleHandler = emitter.particleHandler;
+            const handler : ParticleHandler = emitter.emitter.particleHandler;
             if (handler is DisplayObjectHandler)
             {
                 DisplayObjectHandler(handler).container = _renderTarget as DisplayObjectContainer;

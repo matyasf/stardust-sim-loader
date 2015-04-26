@@ -38,11 +38,13 @@ public class EmitterValueObject
         return _id;
     }
 
+    [Deprecated(message="This property will be soon removed, use setTextures() instead")]
     public function get image() : BitmapData
     {
         return _image;
     }
 
+    [Deprecated(message="This property will be soon removed, use setTextures() instead")]
     public function set image(imageBD : BitmapData) : void
     {
         _image = imageBD;
@@ -52,9 +54,7 @@ public class EmitterValueObject
         }
     }
 
-    /** Returns the texture used by the simulation. Only has value if image has been set and its rendering via Starling.
-     *  Note, that this texture does *not* get disposed automatically, you need to do it manually if you are no longer
-     *  using it or call ProjectValueObject.destroy() */
+    [Deprecated(message="This property will be soon removed, use setTextures() instead")]
     public function get texture():Texture
     {
         if (emitter.particleHandler is StarlingHandler)
