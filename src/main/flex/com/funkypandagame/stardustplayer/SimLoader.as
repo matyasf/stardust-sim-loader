@@ -68,6 +68,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
 
     private function loadOldFormatImages() : void
     {
+        trace("Stardust: Deprecated sde file. Load and save in the editor to convert it to the new format.");
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
@@ -81,7 +82,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 sequenceLoader.addJob( loadImageJob );
             }
         }
-        sequenceLoader.addEventListener( Event.COMPLETE, onProjectImagesLoaded );
+        sequenceLoader.addEventListener( Event.COMPLETE, onOldFormatProjectImagesLoaded );
         sequenceLoader.loadSequence();
     }
 
@@ -141,9 +142,9 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         dispatchEvent( new Event(Event.COMPLETE) );
     }
 
-    private function onProjectImagesLoaded( event : Event ) : void
+    private function onOldFormatProjectImagesLoaded( event : Event ) : void
     {
-        sequenceLoader.removeEventListener( Event.COMPLETE, onProjectImagesLoaded );
+        sequenceLoader.removeEventListener( Event.COMPLETE, onOldFormatProjectImagesLoaded );
 
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
@@ -190,7 +191,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 var allTextures : Vector.<SubTexture> = new Vector.<SubTexture>();
                 if (rawData.image)
                 {
-                    trace("Stardust: Deprecated sde file. Load and save in the editor to convert it to the new format.");
                     var handler : StarlingHandler = StarlingHandler(emitterVO.emitter.particleHandler);
                     var spWidth : uint = handler.spriteSheetSliceWidth;
                     var spHeight : uint = handler.spriteSheetSliceHeight;
@@ -198,23 +198,15 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                             (rawData.image.width >= spWidth * 2 || rawData.image.height >= spHeight * 2);
                     if (isSpriteSheet)
                     {
-                        var tmpAtlas : TextureAtlas = new TextureAtlas(Texture.fromBitmapData(rawData.image.clone(), false));
+                        var rootTexture : Texture = Texture.fromBitmapData(rawData.image.clone(), false);
                         var xIter : int = Math.floor( rawData.image.width / spWidth );
                         var yIter : int = Math.floor( rawData.image.height / spHeight );
-                        var cnt : uint = 0;
                         for ( var j : int = 0; j < yIter; j ++ )
                         {
                             for ( var i : int = 0; i < xIter; i ++ )
                             {
-                                tmpAtlas.addRegion(SDEConstants.intToSortableStr(cnt, xIter * yIter),
-                                                   new Rectangle( i * spWidth, j * spHeight, spWidth, spHeight ));
-                                cnt++;
+                                allTextures.push(new SubTexture(rootTexture, new Rectangle( i * spWidth, j * spHeight, spWidth, spHeight )));
                             }
-                        }
-                        var texs : Vector.<Texture> = tmpAtlas.getTextures("");
-                        for each (var tex : SubTexture in texs)
-                        {
-                            allTextures.push(tex);
                         }
                     }
                     else
@@ -226,17 +218,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 else if (atlas)
                 {
                     var textures : Vector.<Texture> = atlas.getTextures(SDEConstants.getSubTexturePrefix(emitterVO.id));
-                    if (textures)
+                    var len : uint = textures.length;
+                    for ( var k : int = 0; k < len; k++ )
                     {
-                        var len : uint = textures.length;
-                        for ( var k : int = 0; k < len; k++ )
-                        {
-                            allTextures.push(textures[k]);
-                        }
-                    }
-                    else
-                    {
-                        trace("WARNING: No texture for emitter", emitterVO.id, "You need to set its textures manually")
+                        allTextures.push(textures[k]);
                     }
                 }
                 else

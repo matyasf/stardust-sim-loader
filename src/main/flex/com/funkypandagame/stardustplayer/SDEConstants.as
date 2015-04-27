@@ -47,10 +47,16 @@ public class SDEConstants
                 filename.substr(filename.length - 4, filename.length) == ".png");
     }
 
-    // the names of the subtextures in the atlas
+    // Returns the prefix for all textures used by emitterId in the atlas.
     public static function getSubTexturePrefix(emitterId : uint) : String
     {
         return "emitter_" + emitterId + "_image_";
+    }
+
+    // Returns names for subTextures .sde files.
+    public static function getSubTextureName(emitterId : uint, imageNumber : uint, numberOfImagesInAtlas : uint) : String
+    {
+        return getSubTexturePrefix(emitterId) + intToSortableStr(imageNumber, numberOfImagesInAtlas);
     }
 
     /**
@@ -60,7 +66,7 @@ public class SDEConstants
      *   @return The sortable string
      *   @author Jackson Dunstan, JacksonDunstan.com
      */
-    public static function intToSortableStr(val:uint, maxValue:uint): String
+    private static function intToSortableStr(val:uint, maxValue:uint): String
     {
         // Get the number of digits in the string and the value of the most-significant digit
         var digitValue:uint = 1;
