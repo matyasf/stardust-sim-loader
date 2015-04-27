@@ -54,7 +54,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         {
             throw new Error("Descriptor JSON not found in the simulation ByteArray.");
         }
-        if (uint(descriptorJSON.version) < Stardust.VERSION)
+        if (parseFloat(descriptorJSON.version) < Stardust.VERSION)
         {
             trace("Stardust Sim Loader: WARNING loaded simulation is created with an old version of the editor, it might not run.");
         }
@@ -175,7 +175,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         {
             throw new Error("ERROR: Project is not loaded, call loadSim(), and then wait for the Event.COMPLETE event.");
         }
-        var project : ProjectValueObject = new ProjectValueObject(descriptorJSON.version);
+        var project : ProjectValueObject = new ProjectValueObject(parseFloat(descriptorJSON.version));
         for each(var rawData : RawEmitterData in rawEmitterDatas)
         {
             var emitterVO : EmitterValueObject = new EmitterValueObject(rawData.emitterID, EmitterBuilder.buildEmitter(rawData.emitterXML));
@@ -199,13 +199,16 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                     if (isSpriteSheet)
                     {
                         var tmpAtlas : TextureAtlas = new TextureAtlas(Texture.fromBitmapData(rawData.image.clone(), false));
-                        const xIter : int = Math.floor( rawData.image.width / spWidth );
-                        const yIter : int = Math.floor( rawData.image.height / spHeight );
+                        var xIter : int = Math.floor( rawData.image.width / spWidth );
+                        var yIter : int = Math.floor( rawData.image.height / spHeight );
+                        var cnt : uint = 0;
                         for ( var j : int = 0; j < yIter; j ++ )
                         {
                             for ( var i : int = 0; i < xIter; i ++ )
                             {
-                                tmpAtlas.addRegion(j + "_" + i, new Rectangle( i * spWidth, j * spHeight, spWidth, spHeight ));
+                                tmpAtlas.addRegion(SDEConstants.intToSortableStr(cnt, xIter * yIter),
+                                                   new Rectangle( i * spWidth, j * spHeight, spWidth, spHeight ));
+                                cnt++;
                             }
                         }
                         var texs : Vector.<Texture> = tmpAtlas.getTextures("");
@@ -225,9 +228,10 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                     var textures : Vector.<Texture> = atlas.getTextures(SDEConstants.getSubTexturePrefix(emitterVO.id));
                     if (textures)
                     {
-                        for each (var subTexture : SubTexture in textures)
+                        var len : uint = textures.length;
+                        for ( var k : int = 0; k < len; k++ )
                         {
-                            allTextures.push(subTexture);
+                            allTextures.push(textures[k]);
                         }
                     }
                     else
