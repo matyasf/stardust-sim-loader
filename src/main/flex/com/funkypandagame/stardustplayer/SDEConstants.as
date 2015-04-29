@@ -80,7 +80,7 @@ public class SDEConstants
 
         // Build the string from most-significant to least-significant digit
         var ret:String = "";
-        for (var i:uint; i < digits; ++i)
+        for (var i:uint = 0; i < digits; ++i)
         {
             var digit:int = val / digitValue;
             ret += digit;

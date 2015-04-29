@@ -16,12 +16,10 @@ import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.textures.SubTexture;
 
-import starling.textures.Texture;
-
 public class EmitterValueObject
 {
     public var emitter : Emitter;
-    /** Snapshot of the particles. If its not null then the emitter will have the particles here upon creation. */
+    /** Snapshot of the particles. If its not null then the emitter will have the particles stored here upon creation. */
     public var emitterSnapshot : ByteArray;
     private var _id : uint;
 

@@ -69,7 +69,6 @@ public class SimLoaderTest
         assertEquals( 12, ImpulseClock(emitter0.emitter.clock).burstInterval );
         assertNotNull( emitter0.emitter );
         assertEquals( 0, emitter0.id );
-        assertNotNull( emitter0.image );
         assertEquals( "stardustEmitter_0.xml", SDEConstants.getXMLName(emitter0.id) );
         assertEquals( "emitterImage_0.png", SDEConstants.getImageName(emitter0.id) );
 
@@ -78,11 +77,8 @@ public class SimLoaderTest
 	    assertTrue( emitter1.emitter.clock is SteadyClock );
         assertNotNull( emitter1.emitter );
         assertEquals( 1, emitter1.id );
-        assertNotNull( emitter1.image );
         assertEquals( "stardustEmitter_1.xml", SDEConstants.getXMLName(emitter1.id) );
         assertEquals( "emitterImage_1.png", SDEConstants.getImageName(emitter1.id) );
-
-        assertFalse( (emitter0.image == emitter1.image) );
     }
 
     [Test(async)]
