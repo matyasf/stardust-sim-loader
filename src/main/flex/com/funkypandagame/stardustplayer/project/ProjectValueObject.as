@@ -83,7 +83,11 @@ public class ProjectValueObject
         }
     }
 
-    /** The simulation will be unusable after calling this method. Note that this disposes StarlingHandler's texture. */
+    /**
+     * The simulation will be unusable after calling this method.
+     * Note that this does *NOT* dispose StarlingHandler's texture, since textures are shared by instances.
+     * To dispose the texture call SimLoader.dispose if you dont want to create more simulations of this type.
+     **/
     public function destroy() : void
     {
         for each (var emitterValueObject : EmitterValueObject in emitters)
@@ -102,10 +106,6 @@ public class ProjectValueObject
                 {
                     renderer.parent.removeChild(renderer);
                 }
-            }
-            if (emitterValueObject.texture)
-            {
-                emitterValueObject.texture[0].root.dispose();
             }
             delete emitters[emitterValueObject.id];
         }

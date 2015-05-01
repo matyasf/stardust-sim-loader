@@ -22,7 +22,7 @@ apply plugin: 'ideafx'
 apply plugin: 'maven'
 
 group = 'com.funkypandagame'
-version = '3.14'
+version = '3.15'
 type = 'swc'
 
 srcDirs	= ['src/main/flex']
