@@ -20,10 +20,10 @@ import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.display.QuadBatch;
 
-/** Simple class to play back simulations. If you need something more custom write your own. */
+/** Simple class to play back simulations. */
 public class SimPlayer
 {
-    protected var _sim : ProjectValueObject;
+    protected var _project : ProjectValueObject;
     protected var _renderTarget : Object;
 
     [Deprecated(message="Use setProject() and setRenderTarget() instead")]
@@ -39,7 +39,7 @@ public class SimPlayer
         {
             throw new Error("A simulation can not be null");
         }
-        _sim = sim;
+        _project = sim;
         setupSimulation();
     }
 
@@ -56,11 +56,11 @@ public class SimPlayer
 
     protected function setupSimulation() : void
     {
-        if (_renderTarget == null || _sim == null)
+        if (_renderTarget == null || _project == null)
         {
             return;
         }
-        for each (var emitter : EmitterValueObject in _sim.emitters)
+        for each (var emitter : EmitterValueObject in _project.emitters)
         {
             const handler : ParticleHandler = emitter.emitter.particleHandler;
             if (handler is DisplayObjectHandler)
@@ -94,13 +94,18 @@ public class SimPlayer
         }
     }
 
+    public function getProject() : ProjectValueObject
+    {
+        return _project;
+    }
+
     public function stepSimulation( numSteps : uint = 1) : void
     {
-        if (_sim == null || _renderTarget == null)
+        if (_project == null || _renderTarget == null)
         {
             throw new Error("The simulation and its render target must be set.");
         }
-        for each (var emVO : EmitterValueObject in _sim.emitters)
+        for each (var emVO : EmitterValueObject in _project.emitters)
         {
             emVO.emitter.step( numSteps );
 	        if (emVO.emitter.clock is ImpulseClock)
