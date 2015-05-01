@@ -246,8 +246,8 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         descriptorJSON = null;
         if (atlas)
         {
-            atlas = null;
             atlas.dispose();
+            atlas = null;
         }
         for each (var rawEmitterData : RawEmitterData in rawEmitterDatas)
         {
