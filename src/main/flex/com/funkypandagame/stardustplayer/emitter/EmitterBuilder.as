@@ -16,7 +16,7 @@ public class EmitterBuilder
 
     private static var builder : XMLBuilder;
 
-    public static function buildEmitter(sourceXML : XML) : Emitter
+    public static function buildEmitter(sourceXML : XML, uniqueEmitterId : String) : Emitter
     {
         if ( builder == null)
         {
@@ -27,7 +27,9 @@ public class EmitterBuilder
             builder.registerClass( StarlingHandler );
         }
         builder.buildFromXML( sourceXML );
-        return (builder.getElementsByClass(Emitter) as Vector.<StardustElement>)[0] as Emitter;
+        var emitter : Emitter = (builder.getElementsByClass(Emitter) as Vector.<StardustElement>)[0] as Emitter
+        emitter.name = uniqueEmitterId;
+        return emitter;
     }
 }
 }

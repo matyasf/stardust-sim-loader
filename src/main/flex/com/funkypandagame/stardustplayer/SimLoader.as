@@ -17,6 +17,9 @@ import flash.geom.Rectangle;
 import flash.utils.ByteArray;
 
 import idv.cjcat.stardustextended.Stardust;
+import idv.cjcat.stardustextended.common.actions.Action;
+import idv.cjcat.stardustextended.common.emitters.Emitter;
+import idv.cjcat.stardustextended.twoD.actions.Spawn;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import org.as3commons.zip.IZipFile;
@@ -74,7 +77,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
             if (SDEConstants.isEmitterXMLName(loadedFileName))
             {
-                var emitterId : uint = SDEConstants.getEmitterID(loadedFileName);
+                var emitterId : String = SDEConstants.getEmitterID(loadedFileName);
                 const loadImageJob : LoadByteArrayJob = new LoadByteArrayJob(
                         emitterId.toString(),
                         SDEConstants.getImageName(emitterId),
@@ -124,7 +127,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
             if (SDEConstants.isEmitterXMLName(loadedFileName))
             {
-                const emitterId : uint = SDEConstants.getEmitterID(loadedFileName);
+                const emitterId : String = SDEConstants.getEmitterID(loadedFileName);
                 const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
                 var snapshot : IZipFile = loadedZip.getFileByName(SDEConstants.getParticleSnapshotName(emitterId));
 
@@ -151,7 +154,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
             if (SDEConstants.isEmitterXMLName(loadedFileName))
             {
-                const emitterId : uint = SDEConstants.getEmitterID(loadedFileName);
+                const emitterId : String = SDEConstants.getEmitterID(loadedFileName);
                 const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
                 const job : LoadByteArrayJob = sequenceLoader.getJobByName( emitterId.toString() );
                 var snapshot : IZipFile = loadedZip.getFileByName(SDEConstants.getParticleSnapshotName(emitterId));
@@ -179,7 +182,9 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         var project : ProjectValueObject = new ProjectValueObject(parseFloat(descriptorJSON.version));
         for each(var rawData : RawEmitterData in rawEmitterDatas)
         {
-            var emitterVO : EmitterValueObject = new EmitterValueObject(rawData.emitterID, EmitterBuilder.buildEmitter(rawData.emitterXML));
+            var emitter : Emitter = EmitterBuilder.buildEmitter(rawData.emitterXML, rawData.emitterID);
+            emitter.name = rawData.emitterID;
+            var emitterVO : EmitterValueObject = new EmitterValueObject(emitter);
             project.emitters[rawData.emitterID] = emitterVO;
             if (rawData.snapshot)
             {
@@ -235,6 +240,24 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 trace("Non starling renderers are currently not supported!");
             }
         }
+
+        for each (var em : Emitter in project.emittersArr)
+        {
+            for each (var action : Action in em.actions)
+            {
+                if (action is Spawn && Spawn(action).spawnerEmitterId)
+                {
+                    var spawnAction : Spawn = Spawn(action);
+                    for each (var emVO : EmitterValueObject in project.emitters)
+                    {
+                        if (spawnAction.spawnerEmitterId == emVO.id)
+                        {
+                            spawnAction.spawnerEmitter = emVO.emitter;
+                        }
+                    }
+                }
+            }
+        }
         return project;
     }
 
@@ -271,7 +294,7 @@ import flash.utils.ByteArray;
 
 class RawEmitterData
 {
-    public var emitterID : uint;
+    public var emitterID : String;
     public var emitterXML : XML;
     public var image : BitmapData;
     public var snapshot : ByteArray;

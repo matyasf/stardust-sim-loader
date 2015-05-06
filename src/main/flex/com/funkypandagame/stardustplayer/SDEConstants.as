@@ -6,12 +6,12 @@ public class SDEConstants
     private static const EMITTER_NAME_PREFIX : String = "stardustEmitter_";
     private static const ATLAS_NAME_PREFIX : String = "atlas_";
 
-    public static function getXMLName(id : int) : String
+    public static function getXMLName(id : String) : String
     {
         return EMITTER_NAME_PREFIX + id + ".xml";
     }
 
-    public static function getImageName(id : int) : String
+    public static function getImageName(id : String) : String
     {
         return "emitterImage_" + id + ".png";
     }
@@ -26,7 +26,7 @@ public class SDEConstants
         return "atlas_" + id + ".xml";
     }
 
-    public static function getParticleSnapshotName(id : int) : String
+    public static function getParticleSnapshotName(id : String) : String
     {
         return "emitterSnapshot_" + id + ".bytearray";
     }
@@ -36,9 +36,9 @@ public class SDEConstants
         return (filename.substr(0,16) == EMITTER_NAME_PREFIX)
     }
 
-    public static function getEmitterID(XMLFilename : String) : uint
+    public static function getEmitterID(XMLFilename : String) : String
     {
-        return parseInt(XMLFilename.substr(16).split(".")[0]);
+        return XMLFilename.substr(16).split(".")[0];
     }
 
     public static function isAtlasImageName(filename : String) : Boolean
@@ -48,13 +48,13 @@ public class SDEConstants
     }
 
     // Returns the prefix for all textures used by emitterId in the atlas.
-    public static function getSubTexturePrefix(emitterId : uint) : String
+    public static function getSubTexturePrefix(emitterId : String) : String
     {
         return "emitter_" + emitterId + "_image_";
     }
 
     // Returns names for subTextures .sde files.
-    public static function getSubTextureName(emitterId : uint, imageNumber : uint, numberOfImagesInAtlas : uint) : String
+    public static function getSubTextureName(emitterId : String, imageNumber : uint, numberOfImagesInAtlas : uint) : String
     {
         return getSubTexturePrefix(emitterId) + intToSortableStr(imageNumber, numberOfImagesInAtlas);
     }

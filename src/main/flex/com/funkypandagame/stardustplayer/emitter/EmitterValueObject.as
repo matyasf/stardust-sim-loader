@@ -21,17 +21,15 @@ public class EmitterValueObject
     public var emitter : Emitter;
     /** Snapshot of the particles. If its not null then the emitter will have the particles stored here upon creation. */
     public var emitterSnapshot : ByteArray;
-    private var _id : uint;
 
-    public function EmitterValueObject( emitterId : uint, _emitter : Emitter )
+    public function EmitterValueObject( _emitter : Emitter )
     {
         emitter = _emitter;
-        _id = emitterId;
     }
 
-    public function get id() : uint
+    public function get id() : String
     {
-        return _id;
+        return emitter.name;
     }
 
     public function get texture() : Vector.<SubTexture>
