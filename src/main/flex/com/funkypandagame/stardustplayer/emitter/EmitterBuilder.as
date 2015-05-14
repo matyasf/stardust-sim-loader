@@ -23,11 +23,10 @@ public class EmitterBuilder
             builder = new XMLBuilder();
             builder.registerClassesFromClassPackage( CommonClassPackage.getInstance() );
             builder.registerClassesFromClassPackage( TwoDClassPackage.getInstance() );
-            builder.registerClassesFromClassPackage( FlashDisplayClassPackage.getInstance() );
             builder.registerClass( StarlingHandler );
         }
         builder.buildFromXML( sourceXML );
-        var emitter : Emitter = (builder.getElementsByClass(Emitter) as Vector.<StardustElement>)[0] as Emitter
+        var emitter : Emitter = (builder.getElementsByClass(Emitter) as Vector.<StardustElement>)[0] as Emitter;
         emitter.name = uniqueEmitterId;
         return emitter;
     }

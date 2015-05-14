@@ -4,30 +4,20 @@ package com.funkypandagame.stardustplayer
 import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 
-import flash.display.BitmapData;
-
-import flash.display.DisplayObjectContainer;
-
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 
-import idv.cjcat.stardustextended.common.handlers.ParticleHandler;
-import idv.cjcat.stardustextended.flashdisplay.handlers.BitmapHandler;
-import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectHandler;
-import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectSpriteSheetHandler;
-import idv.cjcat.stardustextended.twoD.handlers.PixelHandler;
-import idv.cjcat.stardustextended.flashdisplay.handlers.SingularBitmapHandler;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
-import starling.display.QuadBatch;
+import starling.display.DisplayObjectContainer;
 
 /** Simple class to play back simulations. */
 public class SimPlayer
 {
     protected var _project : ProjectValueObject;
-    protected var _renderTarget : Object;
+    protected var _renderTarget : DisplayObjectContainer;
 
     [Deprecated(message="Use setProject() and setRenderTarget() instead")]
-    public function setSimulation( sim : ProjectValueObject, renderTarget : Object ) : void
+    public function setSimulation( sim : ProjectValueObject, renderTarget : DisplayObjectContainer ) : void
     {
         setProject(sim);
         setRenderTarget(renderTarget);
@@ -43,7 +33,7 @@ public class SimPlayer
         setupSimulation();
     }
 
-    public function setRenderTarget(renderTarget : Object) : void
+    public function setRenderTarget(renderTarget : DisplayObjectContainer) : void
     {
         if (renderTarget == null)
         {
@@ -61,35 +51,7 @@ public class SimPlayer
         }
         for each (var emitter : EmitterValueObject in _project.emitters)
         {
-            const handler : ParticleHandler = emitter.emitter.particleHandler;
-            if (handler is DisplayObjectHandler)
-            {
-                DisplayObjectHandler(handler).container = _renderTarget as DisplayObjectContainer;
-            }
-            if (handler is DisplayObjectSpriteSheetHandler)
-            {
-                DisplayObjectSpriteSheetHandler(handler).container = _renderTarget as DisplayObjectContainer;
-            }
-            else if (handler is BitmapHandler)
-            {
-                BitmapHandler(handler).targetBitmapData = BitmapData(_renderTarget);
-            }
-            else if (handler is SingularBitmapHandler)
-            {
-                SingularBitmapHandler(handler).targetBitmapData = BitmapData(_renderTarget);
-            }
-            else if (handler is PixelHandler)
-            {
-                PixelHandler(handler).targetBitmapData = BitmapData(_renderTarget);
-            }
-            else if (handler is StarlingHandler)
-            {
-                StarlingHandler(handler).container = _renderTarget as starling.display.DisplayObjectContainer;
-            }
-            else
-            {
-                throw new Error("Unknown particle handler " + handler);
-            }
+            StarlingHandler(emitter.emitter.particleHandler).container = _renderTarget as DisplayObjectContainer;
         }
     }
 

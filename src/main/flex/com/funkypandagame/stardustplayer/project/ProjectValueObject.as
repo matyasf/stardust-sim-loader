@@ -96,16 +96,13 @@ public class ProjectValueObject
             emitterValueObject.emitter.clearActions();
             emitterValueObject.emitter.clearInitializers();
             emitterValueObject.emitterSnapshot = null;
-            if (emitterValueObject.emitter.particleHandler is StarlingHandler)
+            var renderer : StardustStarlingRenderer = StarlingHandler(emitterValueObject.emitter.particleHandler).renderer;
+            // If this is not called, then Starling can call the render() function of the renderer,
+            // which will try to render with disposed textures.
+            renderer.advanceTime(new Vector.<Particle>());
+            if (renderer.parent)
             {
-                var renderer : StardustStarlingRenderer = StarlingHandler(emitterValueObject.emitter.particleHandler).renderer;
-                // If this is not called, then Starling can call the render() function of the renderer,
-                // which will try to render with disposed textures.
-                renderer.advanceTime(new Vector.<Particle>());
-                if (renderer.parent)
-                {
-                    renderer.parent.removeChild(renderer);
-                }
+                renderer.parent.removeChild(renderer);
             }
             delete emitters[emitterValueObject.id];
         }

@@ -13,14 +13,11 @@ import flash.display.BitmapData;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
-import flash.geom.Point;
-import flash.geom.Rectangle;
 import flash.utils.ByteArray;
 
 import idv.cjcat.stardustextended.Stardust;
 import idv.cjcat.stardustextended.common.actions.Action;
 import idv.cjcat.stardustextended.common.emitters.Emitter;
-import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectSpriteSheetHandler;
 import idv.cjcat.stardustextended.twoD.actions.Spawn;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
@@ -57,20 +54,18 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         descriptorJSON = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
         if (descriptorJSON == null)
         {
-            throw new Error("Descriptor JSON not found in the simulation ByteArray.");
+            throw new Error(DESCRIPTOR_FILENAME + " not found in the provided ByteArray.");
         }
         if (parseFloat(descriptorJSON.version) < Stardust.VERSION)
         {
             trace("Stardust Sim Loader: WARNING loaded simulation is created with an old version of the editor, it might not run.");
         }
 
-        var hasAtlas : Boolean = false;
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
             if (SDEConstants.isAtlasImageName(loadedFileName))
             {
-                hasAtlas = true;
                 var loadAtlasJob : LoadByteArrayJob = new LoadByteArrayJob(
                         loadedFileName,
                         loadedFileName,
@@ -81,30 +76,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 break;
             }
         }
-        if (!hasAtlas)
-        {
-            loadOldFormatImages();
-        }
-    }
-
-    private function loadOldFormatImages() : void
-    {
-        trace("Stardust: Deprecated sde file. Load and save in the editor to convert it to the new format.");
-        for (var i:int = 0; i < loadedZip.getFileCount(); i++)
-        {
-            var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (SDEConstants.isEmitterXMLName(loadedFileName))
-            {
-                var emitterId : String = SDEConstants.getEmitterID(loadedFileName);
-                const loadImageJob : LoadByteArrayJob = new LoadByteArrayJob(
-                        emitterId.toString(),
-                        SDEConstants.getImageName(emitterId),
-                        loadedZip.getFileByName(SDEConstants.getImageName(emitterId)).content );
-                sequenceLoader.addJob( loadImageJob );
-            }
-        }
-        sequenceLoader.addEventListener( Event.COMPLETE, onOldFormatProjectImagesLoaded );
-        sequenceLoader.loadSequence();
     }
 
     private function onProjectAtlasLoaded( event : Event ) : void
@@ -132,69 +103,8 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         var atlasXMLBA : ByteArray = loadedZip.getFileByName(atlasXMLName).content;
         var atlasXML : XML = new XML(atlasXMLBA.readUTFBytes(atlasXMLBA.length));
         var atlasBD : BitmapData = Bitmap(job.content).bitmapData;
+        atlas = new TextureAtlas(Texture.fromBitmapData(atlasBD), atlasXML);
 
-        if (rawData.emitterXML.handlers.StarlingHandler.length() > 0)
-        {
-            atlas = new TextureAtlas(Texture.fromBitmapData(atlasBD), atlasXML);
-        }
-        else if (rawData.emitterXML.handlers.DisplayObjectSpriteSheetHandler.length() > 0)
-        {
-            for each (var rawEmitterData : RawEmitterData in rawEmitterDatas)
-            {
-                rawEmitterData.displayListImages = new Vector.<BitmapData>();
-                var images : Array = [];
-                for each (var subTexture:XML in atlasXML.SubTexture)
-                {
-                    var texName : String = subTexture.@name;
-                    if (texName.indexOf(SDEConstants.getSubTexturePrefix(rawEmitterData.emitterID)) > -1)
-                    {
-                        var rect : Rectangle = new Rectangle(subTexture.@x, subTexture.@y, subTexture.@width, subTexture.@height);
-                        var img : BitmapData = new BitmapData(rect.width, rect.height);
-                        img.copyPixels(atlasBD, rect, new Point(0, 0));
-                        images.push({texName: texName, img: img});
-                    }
-                }
-                images = images.sortOn("texName", Array.CASEINSENSITIVE);
-                for (var k : int = 0; k < images.length; k++)
-                {
-                    rawEmitterData.displayListImages.push(images[k].img);
-                }
-            }
-        }
-        else
-        {
-            trace("ERROR: Unsupported particle handler", rawEmitterDatas[0].emitterXML.handlers,
-                  "You will need to set the emitter image manually");
-        }
-
-        loadedZip = null;
-        sequenceLoader.clearAllJobs();
-        projectLoaded = true;
-        dispatchEvent( new Event(Event.COMPLETE) );
-    }
-
-    private function onOldFormatProjectImagesLoaded( event : Event ) : void
-    {
-        sequenceLoader.removeEventListener( Event.COMPLETE, onOldFormatProjectImagesLoaded );
-
-        for (var i:int = 0; i < loadedZip.getFileCount(); i++)
-        {
-            var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (SDEConstants.isEmitterXMLName(loadedFileName))
-            {
-                const emitterId : String = SDEConstants.getEmitterID(loadedFileName);
-                const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
-                const job : LoadByteArrayJob = sequenceLoader.getJobByName( emitterId.toString() );
-                var snapshot : IZipFile = loadedZip.getFileByName(SDEConstants.getParticleSnapshotName(emitterId));
-
-                var rawData : RawEmitterData = new RawEmitterData();
-                rawData.emitterID = emitterId;
-                rawData.emitterXML = new XML(stardustBA.readUTFBytes(stardustBA.length));
-                rawData.image = Bitmap(job.content).bitmapData;
-                rawData.snapshot = snapshot ? snapshot.content : null;
-                rawEmitterDatas.push(rawData);
-            }
-        }
         loadedZip = null;
         sequenceLoader.clearAllJobs();
         projectLoaded = true;
@@ -219,57 +129,14 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 emitterVO.emitterSnapshot = rawData.snapshot;
                 emitterVO.addParticlesFromSnapshot();
             }
-            if (emitterVO.emitter.particleHandler is StarlingHandler)
+            var allTextures : Vector.<SubTexture> = new Vector.<SubTexture>();
+            var textures : Vector.<Texture> = atlas.getTextures(SDEConstants.getSubTexturePrefix(emitterVO.id));
+            var len : uint = textures.length;
+            for ( var k : int = 0; k < len; k++ )
             {
-                var allTextures : Vector.<SubTexture> = new Vector.<SubTexture>();
-                if (rawData.image)
-                {
-                    var handler : StarlingHandler = StarlingHandler(emitterVO.emitter.particleHandler);
-                    var spWidth : uint = handler.spriteSheetSliceWidth;
-                    var spHeight : uint = handler.spriteSheetSliceHeight;
-                    var isSpriteSheet : Boolean = (spWidth > 0 && spHeight > 0) &&
-                            (rawData.image.width >= spWidth * 2 || rawData.image.height >= spHeight * 2);
-                    if (isSpriteSheet)
-                    {
-                        var rootTexture : Texture = Texture.fromBitmapData(rawData.image.clone(), false);
-                        var xIter : int = Math.floor( rawData.image.width / spWidth );
-                        var yIter : int = Math.floor( rawData.image.height / spHeight );
-                        for ( var j : int = 0; j < yIter; j ++ )
-                        {
-                            for ( var i : int = 0; i < xIter; i ++ )
-                            {
-                                allTextures.push(new SubTexture(rootTexture, new Rectangle( i * spWidth, j * spHeight, spWidth, spHeight )));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var subTex : SubTexture = new SubTexture(Texture.fromBitmapData(rawData.image.clone(), false), null);
-                        allTextures.push(subTex);
-                    }
-                }
-                else if (atlas)
-                {
-                    var textures : Vector.<Texture> = atlas.getTextures(SDEConstants.getSubTexturePrefix(emitterVO.id));
-                    var len : uint = textures.length;
-                    for ( var k : int = 0; k < len; k++ )
-                    {
-                        allTextures.push(textures[k]);
-                    }
-                }
-                StarlingHandler(emitterVO.emitter.particleHandler).setTextures(allTextures);
+                allTextures.push(textures[k]);
             }
-            else if (emitterVO.emitter.particleHandler is DisplayObjectSpriteSheetHandler)
-            {
-                if (rawData.image)
-                {
-                    trace("Old project files for Flash renderers are not supported!");
-                }
-                else
-                {
-                    DisplayObjectSpriteSheetHandler(emitterVO.emitter.particleHandler).setImages(rawData.displayListImages);
-                }
-            }
+            StarlingHandler(emitterVO.emitter.particleHandler).setTextures(allTextures);
         }
 
         for each (var em : Emitter in project.emittersArr)
@@ -293,7 +160,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
     }
 
     // Call this if you don't want to create more instances of this project to free up its memory.
-    // After calling it createProjectInstance will not work.
+    // After calling it createProjectInstance() will not work.
     public function dispose() : void
     {
         projectLoaded = false;
@@ -305,10 +172,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         }
         for each (var rawEmitterData : RawEmitterData in rawEmitterDatas)
         {
-            if (rawEmitterData.image)
-            {
-                rawEmitterData.image.dispose();
-            }
             if (rawEmitterData.snapshot)
             {
                 rawEmitterData.snapshot.clear();
@@ -320,14 +183,11 @@ public class SimLoader extends EventDispatcher implements ISimLoader
 }
 }
 
-import flash.display.BitmapData;
 import flash.utils.ByteArray;
 
 class RawEmitterData
 {
     public var emitterID : String;
     public var emitterXML : XML;
-    public var image : BitmapData;
-    public var displayListImages : Vector.<BitmapData>;
     public var snapshot : ByteArray;
 }

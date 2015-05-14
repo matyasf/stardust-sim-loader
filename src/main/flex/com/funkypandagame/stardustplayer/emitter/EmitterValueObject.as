@@ -32,13 +32,9 @@ public class EmitterValueObject
         return emitter.name;
     }
 
-    public function get texture() : Vector.<SubTexture>
+    public function get textures() : Vector.<SubTexture>
     {
-        if (emitter.particleHandler is StarlingHandler)
-        {
-            return StarlingHandler(emitter.particleHandler).textures;
-        }
-        return null;
+        return StarlingHandler(emitter.particleHandler).textures;
     }
 
     public function addParticlesFromSnapshot() : void

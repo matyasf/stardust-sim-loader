@@ -11,11 +11,6 @@ public class SDEConstants
         return EMITTER_NAME_PREFIX + id + ".xml";
     }
 
-    public static function getImageName(id : String) : String
-    {
-        return "emitterImage_" + id + ".png";
-    }
-
     public static function getAtlasName(id : int) : String
     {
         return "atlas_" + id + ".png";
@@ -24,6 +19,12 @@ public class SDEConstants
     public static function getAtlasXMLName(id : int) : String
     {
         return "atlas_" + id + ".xml";
+    }
+
+    public static function isAtlasImageName(filename : String) : Boolean
+    {
+        return (filename.substr(0,6) == ATLAS_NAME_PREFIX &&
+        filename.substr(filename.length - 4, filename.length) == ".png");
     }
 
     public static function getParticleSnapshotName(id : String) : String
@@ -39,12 +40,6 @@ public class SDEConstants
     public static function getEmitterID(XMLFilename : String) : String
     {
         return XMLFilename.substr(16).split(".")[0];
-    }
-
-    public static function isAtlasImageName(filename : String) : Boolean
-    {
-        return (filename.substr(0,6) == ATLAS_NAME_PREFIX &&
-                filename.substr(filename.length - 4, filename.length) == ".png");
     }
 
     // Returns the prefix for all textures used by emitterId in the atlas.
