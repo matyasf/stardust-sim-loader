@@ -3,25 +3,44 @@ package
 import com.funkypandagame.stardustplayer.SimLoader;
 import com.funkypandagame.stardustplayer.SimPlayer;
 import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
+import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 import com.funkypandagame.stardustplayer.project.ProjectValueObject;
-
-import flash.display.Sprite;
 
 import flash.events.Event;
 
 import flash.utils.ByteArray;
 
+import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
+
 import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectHandler;
+import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import org.flexunit.asserts.assertEquals;
+import org.flexunit.asserts.assertTrue;
 import org.flexunit.async.Async;
 
+import starling.display.Sprite;
+
+// NOTE: tests will work only if the template is used to run them!
 public class SimPlayerTest
 {
 
     [Embed(source="../resources/simWithBurstAndNormalClock.sde", mimeType="application/octet-stream")]
     private var SimWithBurstAndNormalClock:Class;
     private const simWithBurstAndNormalClock : ByteArray = new SimWithBurstAndNormalClock() as ByteArray;
+
+    [Before(async, timeout=15500)]
+    public function setUp():void
+    {
+        Async.proceedOnEvent(this, FlexUnitStarlingIntegration.nativeStage, FlexUnitStarlingIntegrationEvent.CONTEXT_CREATED, 15500);
+        FlexUnitStarlingIntegration.createStarlingContext();
+    }
+
+    [After]
+    public function tearDown():void
+    {
+        FlexUnitStarlingIntegration.destroyStarlingContext();
+    }
 
     [Test(async)]
     public function simWithBurstClock_bursts() : void
@@ -43,19 +62,23 @@ public class SimPlayerTest
         player.stepSimulation();
         player.stepSimulation();
 
+        var emVO : EmitterValueObject = sim.emitters[0];
+
+        assertTrue( emVO.emitter.clock is ImpulseClock );
+
         for (var i : int = 0; i < 12; i++)
         {
-            assertEquals( 34, EmitterValueObject(sim.emitters[0]).emitter.numParticles);
+            assertEquals( 34, emVO.emitter.numParticles);
             player.stepSimulation();
         }
-        assertEquals( 14, EmitterValueObject(sim.emitters[0]).emitter.currentTime );
+        assertEquals( 14, emVO.emitter.currentTime );
         for (var k : int = 0; k < 12; k++)
         {
-            assertEquals( 68, EmitterValueObject(sim.emitters[0]).emitter.numParticles);
+            assertEquals(68, emVO.emitter.numParticles);
             player.stepSimulation();
         }
-        assertEquals( 102, EmitterValueObject(sim.emitters[0]).emitter.numParticles);
-        assertEquals( 26, EmitterValueObject(sim.emitters[0]).emitter.currentTime );
+        assertEquals( 102, emVO.emitter.numParticles);
+        assertEquals( 26, emVO.emitter.currentTime );
     }
 
     [Test(async)]
@@ -68,9 +91,8 @@ public class SimPlayerTest
 
     private function simTime_stepsCorrectTime_loaded( event : Event, passThroughData : Object) : void
     {
-        const sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
-
-        const player : SimPlayer = new SimPlayer();
+        var sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
+        var player : SimPlayer = new SimPlayer();
 
         player.setProject( sim );
         player.setRenderTarget( new Sprite());
@@ -107,8 +129,8 @@ public class SimPlayerTest
         player.setProject( sim );
         player.setRenderTarget( canvas );
 
-        assertEquals( canvas, DisplayObjectHandler(EmitterValueObject(sim.emitters[0]).emitter.particleHandler).container );
-        assertEquals( canvas, DisplayObjectHandler(EmitterValueObject(sim.emitters[1]).emitter.particleHandler).container );
+        assertEquals( canvas, StarlingHandler(EmitterValueObject(sim.emitters[0]).emitter.particleHandler).renderer.parent );
+        assertEquals( canvas, StarlingHandler(EmitterValueObject(sim.emitters[1]).emitter.particleHandler).renderer.parent );
     }
 
 }

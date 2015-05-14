@@ -14,6 +14,8 @@ public class FlexUnitRunner extends Sprite {
 
         public function FlexUnitRunner()
         {
+            FlexUnitStarlingIntegration.stageRef = stage;
+            trace(stage.toString())
             core = new FlexUnitCore();
             core.addListener(new CIListener());
             core.addListener(new TraceListener());

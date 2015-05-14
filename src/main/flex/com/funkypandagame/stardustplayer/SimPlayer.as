@@ -37,7 +37,7 @@ public class SimPlayer
     {
         if (sim == null)
         {
-            throw new Error("A simulation can not be null");
+            trace("WARNING: A simulation can not be null");
         }
         _project = sim;
         setupSimulation();
@@ -47,8 +47,7 @@ public class SimPlayer
     {
         if (renderTarget == null)
         {
-            throw new Error("renderTarget must be a subclass of flash.display.DisplayObjectContainer or " +
-            "starling.display.DisplayObjectContainer and it can not be null");
+            trace("renderTarget cannot be null");
         }
         _renderTarget = renderTarget;
         setupSimulation();
