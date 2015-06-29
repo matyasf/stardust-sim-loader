@@ -57,23 +57,6 @@ public class ProjectValueObject
         return emitterVec;
     }
 
-    /** Convenience function to get all initial positions */
-    public function get initialPositions() : Vector.<Zone>
-    {
-        var zones : Vector.<Zone> = new Vector.<Zone>();
-        for each (var emitter : Emitter in emittersArr)
-        {
-            for each (var init : Initializer in emitter.initializers)
-            {
-                if (init is PositionAnimated)
-                {
-                    zones.push(PositionAnimated(init).zone);
-                }
-            }
-        }
-        return zones;
-    }
-
     /** Removes all particles and puts the simulation back to its initial state. */
     public function resetSimulation() : void
     {

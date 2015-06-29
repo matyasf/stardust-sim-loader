@@ -16,13 +16,6 @@ public class SimPlayer
     protected var _project : ProjectValueObject;
     protected var _renderTarget : DisplayObjectContainer;
 
-    [Deprecated(message="Use setProject() and setRenderTarget() instead")]
-    public function setSimulation( sim : ProjectValueObject, renderTarget : DisplayObjectContainer ) : void
-    {
-        setProject(sim);
-        setRenderTarget(renderTarget);
-    }
-
     public function setProject(sim : ProjectValueObject) : void
     {
         if (sim == null)
