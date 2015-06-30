@@ -72,9 +72,6 @@ public class SimLoaderTest
     {
         var sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
         assertEquals( 2, sim.numberOfEmitters );
-        assertEquals( 2, sim.initialPositions.length );
-        assertThat( sim.initialPositions[0] is Line );
-        assertThat( sim.initialPositions[1] is Line );
 
         const emitter0 : EmitterValueObject = sim.emitters[0];
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter0.emitter.particleHandler).blendMode );
@@ -117,28 +114,6 @@ public class SimLoaderTest
         assertTrue( (emitter1.particleHandler is StarlingHandler) );
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter1.particleHandler ).blendMode );
     }
-
-    [Test(async)]
-    public function initialPositions_areCorrect() : void
-    {
-        var loader : SimLoader = new SimLoader();
-        Async.handleEvent(this, loader, Event.COMPLETE, initialPositions_areCorrectLoaded, 500);
-        loader.loadSim( simWithBurstAndNormalClock );
-    }
-
-    private function initialPositions_areCorrectLoaded( event : Event, passThroughData : Object) : void
-    {
-        var sim : ProjectValueObject = SimLoader(event.target).createProjectInstance();
-
-        assertEquals( 2, sim.initialPositions.length);
-
-        assertThat( sim.initialPositions[0] is Line);
-        assertThat( sim.initialPositions[1] is Line);
-
-        assertEquals( 100, Line(sim.initialPositions[0]).x2);
-        assertEquals( 300, Line(sim.initialPositions[1]).x2);
-    }
-
 
 }
 }
