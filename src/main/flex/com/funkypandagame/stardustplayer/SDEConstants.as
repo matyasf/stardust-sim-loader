@@ -4,27 +4,12 @@ public class SDEConstants
 {
 
     private static const EMITTER_NAME_PREFIX : String = "stardustEmitter_";
-    private static const ATLAS_NAME_PREFIX : String = "atlas_";
+    public static const ATLAS_IMAGE_NAME = "atlas_0.png";
+    public static const ATLAS_XML_NAME = "atlas_0.xml";
 
     public static function getXMLName(id : String) : String
     {
         return EMITTER_NAME_PREFIX + id + ".xml";
-    }
-
-    public static function getAtlasName(id : int) : String
-    {
-        return "atlas_" + id + ".png";
-    }
-
-    public static function getAtlasXMLName(id : int) : String
-    {
-        return "atlas_" + id + ".xml";
-    }
-
-    public static function isAtlasImageName(filename : String) : Boolean
-    {
-        return (filename.substr(0,6) == ATLAS_NAME_PREFIX &&
-        filename.substr(filename.length - 4, filename.length) == ".png");
     }
 
     public static function getParticleSnapshotName(id : String) : String

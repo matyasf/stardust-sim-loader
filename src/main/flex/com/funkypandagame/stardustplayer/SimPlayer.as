@@ -4,8 +4,6 @@ package com.funkypandagame.stardustplayer
 import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 
-import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
-
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import starling.display.DisplayObjectContainer;
@@ -62,14 +60,6 @@ public class SimPlayer
         for each (var emVO : EmitterValueObject in _project.emitters)
         {
             emVO.emitter.step( numSteps );
-	        if (emVO.emitter.clock is ImpulseClock)
-	        {
-		        const impulseClock : ImpulseClock = ImpulseClock(emVO.emitter.clock);
-		        if (emVO.emitter.currentTime % impulseClock.burstInterval == 1)
-		        {
-                    impulseClock.impulse();
-		        }
-	        }
         }
     }
 

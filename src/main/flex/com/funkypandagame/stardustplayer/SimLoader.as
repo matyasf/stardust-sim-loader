@@ -64,7 +64,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (SDEConstants.isAtlasImageName(loadedFileName))
+            if (loadedFileName == SDEConstants.ATLAS_IMAGE_NAME)
             {
                 var loadAtlasJob : LoadByteArrayJob = new LoadByteArrayJob(
                         loadedFileName,
@@ -99,8 +99,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
             }
         }
         var job : LoadByteArrayJob = sequenceLoader.getCompletedJobs().pop();
-        var atlasXMLName : String = job.fileName.substr(0, job.fileName.length - 3) + "xml";
-        var atlasXMLBA : ByteArray = loadedZip.getFileByName(atlasXMLName).content;
+        var atlasXMLBA : ByteArray = loadedZip.getFileByName(SDEConstants.ATLAS_XML_NAME).content;
         var atlasXML : XML = new XML(atlasXMLBA.readUTFBytes(atlasXMLBA.length));
         var atlasBD : BitmapData = Bitmap(job.content).bitmapData;
         atlas = new TextureAtlas(Texture.fromBitmapData(atlasBD), atlasXML);

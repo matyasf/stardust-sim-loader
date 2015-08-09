@@ -75,7 +75,7 @@ public class SimLoaderTest
 
         const emitter0 : EmitterValueObject = sim.emitters[0];
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter0.emitter.particleHandler).blendMode );
-        assertEquals( 12, ImpulseClock(emitter0.emitter.clock).burstInterval );
+        assertEquals( 12, ImpulseClock(emitter0.emitter.clock).impulseInterval );
         assertNotNull( emitter0.emitter );
         assertEquals( 0, emitter0.id );
         assertEquals( "stardustEmitter_0.xml", SDEConstants.getXMLName(emitter0.id) );
@@ -102,8 +102,8 @@ public class SimLoaderTest
         const emitter0 : Emitter = EmitterValueObject(sim.emitters[0]).emitter;
         assertEquals( 3, emitter0.actions.length );
         assertEquals( 3, emitter0.initializers.length );
-        assertEquals( 34, ImpulseClock(emitter0.clock ).impulseCount );
-        assertEquals( 1, ImpulseClock(emitter0.clock ).repeatCount );
+        assertEquals( 34, ImpulseClock(emitter0.clock ).ticksPerCall );
+        assertEquals( 1, ImpulseClock(emitter0.clock ).impulseLength );
         assertTrue( (emitter0.particleHandler is StarlingHandler) );
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter0.particleHandler ).blendMode );
 
