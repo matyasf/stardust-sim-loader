@@ -59,26 +59,27 @@ public class SimPlayerTest
         player.setProject( sim );
         player.setRenderTarget( new Sprite());
 
-        player.stepSimulation();
-        player.stepSimulation();
-
         var emVO : EmitterValueObject = sim.emitters[0];
 
         assertTrue( emVO.emitter.clock is ImpulseClock );
 
+        player.stepSimulation();
         for (var i : int = 0; i < 12; i++)
         {
-            assertEquals( 34, emVO.emitter.numParticles);
+            assertEquals("time:" + emVO.emitter.currentTime + " i:" + i, 34, emVO.emitter.numParticles);
             player.stepSimulation();
         }
-        assertEquals( 14, emVO.emitter.currentTime );
+
+        player.stepSimulation();
         for (var k : int = 0; k < 12; k++)
         {
-            assertEquals(68, emVO.emitter.numParticles);
+            assertEquals("time:" + emVO.emitter.currentTime + " k:" + k, 68, emVO.emitter.numParticles);
             player.stepSimulation();
         }
+
+        player.stepSimulation();
         assertEquals( 102, emVO.emitter.numParticles);
-        assertEquals( 26, emVO.emitter.currentTime );
+        assertEquals( 27, emVO.emitter.currentTime );
     }
 
     [Test(async)]

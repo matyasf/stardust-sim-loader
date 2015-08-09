@@ -14,11 +14,9 @@ import flash.utils.ByteArray;
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 import idv.cjcat.stardustextended.common.clocks.SteadyClock;
 import idv.cjcat.stardustextended.common.emitters.Emitter;
+import idv.cjcat.stardustextended.common.math.UniformRandom;
 
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
-import idv.cjcat.stardustextended.twoD.zones.Line;
-
-import org.flexunit.assertThat;
 
 import org.flexunit.asserts.assertEquals;
 import org.flexunit.asserts.assertNotNull;
@@ -75,7 +73,7 @@ public class SimLoaderTest
 
         const emitter0 : EmitterValueObject = sim.emitters[0];
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter0.emitter.particleHandler).blendMode );
-        assertEquals( 12, ImpulseClock(emitter0.emitter.clock).impulseInterval );
+        assertEquals( 12, UniformRandom(ImpulseClock(emitter0.emitter.clock).impulseInterval).center );
         assertNotNull( emitter0.emitter );
         assertEquals( 0, emitter0.id );
         assertEquals( "stardustEmitter_0.xml", SDEConstants.getXMLName(emitter0.id) );
@@ -103,7 +101,7 @@ public class SimLoaderTest
         assertEquals( 3, emitter0.actions.length );
         assertEquals( 3, emitter0.initializers.length );
         assertEquals( 34, ImpulseClock(emitter0.clock ).ticksPerCall );
-        assertEquals( 1, ImpulseClock(emitter0.clock ).impulseLength );
+        assertEquals( 1, UniformRandom(ImpulseClock(emitter0.clock ).impulseLength).center );
         assertTrue( (emitter0.particleHandler is StarlingHandler) );
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter0.particleHandler ).blendMode );
 
