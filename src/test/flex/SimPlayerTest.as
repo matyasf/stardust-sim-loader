@@ -3,7 +3,6 @@ package
 import com.funkypandagame.stardustplayer.SimLoader;
 import com.funkypandagame.stardustplayer.SimPlayer;
 import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
-import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 
 import flash.events.Event;
@@ -12,7 +11,6 @@ import flash.utils.ByteArray;
 
 import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
 
-import idv.cjcat.stardustextended.flashdisplay.handlers.DisplayObjectHandler;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
 
 import org.flexunit.asserts.assertEquals;
@@ -70,16 +68,14 @@ public class SimPlayerTest
             player.stepSimulation();
         }
 
-        player.stepSimulation();
         for (var k : int = 0; k < 12; k++)
         {
             assertEquals("time:" + emVO.emitter.currentTime + " k:" + k, 68, emVO.emitter.numParticles);
             player.stepSimulation();
         }
 
-        player.stepSimulation();
         assertEquals( 102, emVO.emitter.numParticles);
-        assertEquals( 27, emVO.emitter.currentTime );
+        assertEquals( 25, emVO.emitter.currentTime );
     }
 
     [Test(async)]

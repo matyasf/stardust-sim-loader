@@ -7,13 +7,10 @@ import flash.utils.Dictionary;
 
 import idv.cjcat.stardustextended.common.emitters.Emitter;
 
-import idv.cjcat.stardustextended.common.initializers.Initializer;
 import idv.cjcat.stardustextended.common.particles.Particle;
 
-import idv.cjcat.stardustextended.twoD.initializers.PositionAnimated;
 import idv.cjcat.stardustextended.twoD.starling.StardustStarlingRenderer;
 import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
-import idv.cjcat.stardustextended.twoD.zones.Zone;
 
 public class ProjectValueObject
 {

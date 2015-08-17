@@ -54,13 +54,14 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         descriptorJSON = JSON.parse( loadedZip.getFileByName(DESCRIPTOR_FILENAME).getContentAsString() );
         if (descriptorJSON == null)
         {
-            throw new Error(DESCRIPTOR_FILENAME + " not found in the provided ByteArray.");
+            throw new Error(DESCRIPTOR_FILENAME + " not found.");
         }
         if (parseFloat(descriptorJSON.version) < Stardust.VERSION)
         {
             trace("Stardust Sim Loader: WARNING loaded simulation is created with an old version of the editor, it might not run.");
         }
 
+        var atlasFound : Boolean = false;
         for (var i:int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
@@ -73,8 +74,13 @@ public class SimLoader extends EventDispatcher implements ISimLoader
                 sequenceLoader.addJob( loadAtlasJob );
                 sequenceLoader.addEventListener( Event.COMPLETE, onProjectAtlasLoaded );
                 sequenceLoader.loadSequence();
+                atlasFound = true;
                 break;
             }
+        }
+        if (!atlasFound)
+        {
+            throw new Error(SDEConstants.ATLAS_IMAGE_NAME + " not found, cannot load this file");
         }
     }
 
@@ -158,8 +164,12 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         return project;
     }
 
-    // Call this if you don't want to create more instances of this project to free up its memory.
-    // After calling it createProjectInstance() will not work.
+    /**
+     * Call this if you don't want to create more instances of this project to free up its memory and
+     * there are no simulations from this loader running.
+     * Note that this disposes the underlying texture atlas!
+     * After calling it createProjectInstance() will not work.
+     */
     public function dispose() : void
     {
         projectLoaded = false;
