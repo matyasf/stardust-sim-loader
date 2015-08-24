@@ -22,7 +22,7 @@ apply plugin: 'ideafx'
 apply plugin: 'maven'
 
 group = 'com.funkypandagame'
-version = '3.26'
+version = '3.27'
 type = 'swc'
 
 srcDirs	= ['src/main/flex']
@@ -51,7 +51,7 @@ repositories {
 dependencies {
     airSDK group: 'com.adobe', name: 'AIRSDK', version: '15.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tbz2'
 
-    external 'com.funkypandagame:stardust-library:3.22'
+    external 'com.funkypandagame:stardust-library:3.23'
 
     test group: 'org.flexunit', name: 'flexunit-tasks', version: '4.2.0', ext: 'jar'
     test group: 'org.flexunit', name: 'flexunit-as3', version: '4.2.0', ext: 'swc'

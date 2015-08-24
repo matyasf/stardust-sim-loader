@@ -25,6 +25,8 @@ import org.as3commons.zip.IZipFile;
 
 import org.as3commons.zip.Zip;
 
+import starling.core.Starling;
+
 import starling.textures.SubTexture;
 
 import starling.textures.Texture;
@@ -108,7 +110,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         var atlasXMLBA : ByteArray = loadedZip.getFileByName(SDEConstants.ATLAS_XML_NAME).content;
         var atlasXML : XML = new XML(atlasXMLBA.readUTFBytes(atlasXMLBA.length));
         var atlasBD : BitmapData = Bitmap(job.content).bitmapData;
-        atlas = new TextureAtlas(Texture.fromBitmapData(atlasBD), atlasXML);
+        atlas = new TextureAtlas(Texture.fromBitmapData(atlasBD, false), atlasXML);
 
         loadedZip = null;
         sequenceLoader.clearAllJobs();
