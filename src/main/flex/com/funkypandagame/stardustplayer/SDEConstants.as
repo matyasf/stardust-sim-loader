@@ -4,8 +4,8 @@ public class SDEConstants
 {
 
     private static const EMITTER_NAME_PREFIX : String = "stardustEmitter_";
-    public static const ATLAS_IMAGE_NAME = "atlas_0.png";
-    public static const ATLAS_XML_NAME = "atlas_0.xml";
+    public static const ATLAS_IMAGE_NAME : String = "atlas_0.png";
+    public static const ATLAS_XML_NAME : String = "atlas_0.xml";
 
     public static function getXMLName(id : String) : String
     {

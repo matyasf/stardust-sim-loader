@@ -11,12 +11,12 @@ import flash.events.Event;
 
 import flash.utils.ByteArray;
 
-import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
-import idv.cjcat.stardustextended.common.clocks.SteadyClock;
-import idv.cjcat.stardustextended.common.emitters.Emitter;
-import idv.cjcat.stardustextended.common.math.UniformRandom;
+import idv.cjcat.stardustextended.clocks.ImpulseClock;
+import idv.cjcat.stardustextended.clocks.SteadyClock;
+import idv.cjcat.stardustextended.emitters.Emitter;
+import idv.cjcat.stardustextended.math.UniformRandom;
 
-import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
+import idv.cjcat.stardustextended.handlers.starling.StarlingHandler;
 
 import org.flexunit.asserts.assertEquals;
 import org.flexunit.asserts.assertNotNull;

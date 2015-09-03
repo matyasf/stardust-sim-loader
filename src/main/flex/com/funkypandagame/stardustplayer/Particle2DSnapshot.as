@@ -1,6 +1,6 @@
 package com.funkypandagame.stardustplayer
 {
-import idv.cjcat.stardustextended.common.particles.Particle;
+import idv.cjcat.stardustextended.particles.Particle;
 // could be a dynamic class that writes only the needed properties, but it might be slow
 public class Particle2DSnapshot {
 
@@ -17,9 +17,7 @@ public class Particle2DSnapshot {
     public var scale:Number;
     public var alpha:Number;
     public var mass:Number;
-    public var mask:int;
     public var isDead:Boolean;
-//    public var collisionRadius:Number;
     public var colorR:Number;
     public var colorG:Number;
     public var colorB:Number;
@@ -54,9 +52,7 @@ public class Particle2DSnapshot {
         scale = toLowPrecision(p2d.scale);
         alpha = toLowPrecision(p2d.alpha);
         mass = toLowPrecision(p2d.mass);
-        mask = p2d.mask;
         isDead = p2d.isDead;
-//        collisionRadius = p2d.collisionRadius;
         colorR = toLowPrecision(p2d.colorR);
         colorG = toLowPrecision(p2d.colorG);
         colorB = toLowPrecision(p2d.colorB);
@@ -90,9 +86,7 @@ public class Particle2DSnapshot {
         p2d.scale = scale;
         p2d.alpha = alpha;
         p2d.mass = mass;
-        p2d.mask = mask;
         p2d.isDead = isDead;
-//        p2d.collisionRadius = collisionRadius;
         p2d.colorR = colorR;
         p2d.colorG = colorG;
         p2d.colorB = colorB;

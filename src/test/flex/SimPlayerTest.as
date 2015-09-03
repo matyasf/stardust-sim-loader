@@ -9,9 +9,9 @@ import flash.events.Event;
 
 import flash.utils.ByteArray;
 
-import idv.cjcat.stardustextended.common.clocks.ImpulseClock;
+import idv.cjcat.stardustextended.clocks.ImpulseClock;
 
-import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
+import idv.cjcat.stardustextended.handlers.starling.StarlingHandler;
 
 import org.flexunit.asserts.assertEquals;
 import org.flexunit.asserts.assertTrue;

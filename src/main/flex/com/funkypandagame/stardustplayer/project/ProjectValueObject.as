@@ -5,12 +5,12 @@ import com.funkypandagame.stardustplayer.emitter.EmitterValueObject;
 
 import flash.utils.Dictionary;
 
-import idv.cjcat.stardustextended.common.emitters.Emitter;
+import idv.cjcat.stardustextended.emitters.Emitter;
 
-import idv.cjcat.stardustextended.common.particles.Particle;
+import idv.cjcat.stardustextended.particles.Particle;
 
-import idv.cjcat.stardustextended.twoD.starling.StardustStarlingRenderer;
-import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
+import idv.cjcat.stardustextended.handlers.starling.StardustStarlingRenderer;
+import idv.cjcat.stardustextended.handlers.starling.StarlingHandler;
 
 public class ProjectValueObject
 {

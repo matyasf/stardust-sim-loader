@@ -7,12 +7,12 @@ import flash.net.registerClassAlias;
 import flash.utils.ByteArray;
 import flash.utils.getQualifiedClassName;
 
-import idv.cjcat.stardustextended.common.emitters.Emitter;
+import idv.cjcat.stardustextended.emitters.Emitter;
 
-import idv.cjcat.stardustextended.common.particles.Particle;
-import idv.cjcat.stardustextended.common.particles.PooledParticleFactory;
+import idv.cjcat.stardustextended.particles.Particle;
+import idv.cjcat.stardustextended.particles.PooledParticleFactory;
 
-import idv.cjcat.stardustextended.twoD.starling.StarlingHandler;
+import idv.cjcat.stardustextended.handlers.starling.StarlingHandler;
 
 import starling.textures.SubTexture;
 
