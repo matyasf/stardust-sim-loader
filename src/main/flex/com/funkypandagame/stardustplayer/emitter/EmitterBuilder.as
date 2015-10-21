@@ -2,7 +2,6 @@ package com.funkypandagame.stardustplayer.emitter
 {
 
 import idv.cjcat.stardustextended.CommonClassPackage;
-import idv.cjcat.stardustextended.StardustElement;
 import idv.cjcat.stardustextended.emitters.Emitter;
 
 import idv.cjcat.stardustextended.xml.XMLBuilder;
@@ -18,7 +17,7 @@ public class EmitterBuilder
     {
         createBuilderIfNeeded();
         _builder.buildFromXML( sourceXML );
-        var emitter : Emitter = (_builder.getElementsByClass(Emitter) as Vector.<StardustElement>)[0] as Emitter;
+        var emitter : Emitter = (_builder.getElementsByClass(Emitter))[0] as Emitter;
         emitter.name = uniqueEmitterId;
         return emitter;
     }
