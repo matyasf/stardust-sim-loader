@@ -29,7 +29,7 @@ srcDirs	= ['src/main/flex']
 resourceDirs = ['src/main/resources']
 testDirs = ['src/test/flex']
 testResourceDirs = ['src/test/resources']
-playerVersion = '15.0'
+playerVersion = '20.0'
 
 repositories {
     mavenLocal()
@@ -49,7 +49,7 @@ repositories {
 }
 
 dependencies {
-    airSDK group: 'com.adobe', name: 'AIRSDK', version: '15.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tbz2'
+    airSDK group: 'com.adobe', name: 'AIRSDK', version: '20.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tbz2'
 
     external 'com.funkypandagame:stardust-library:3.26'
 
@@ -61,11 +61,10 @@ dependencies {
 }
 
 def compilerOptions = [
+//        '-swf-version=31', //FP20
         '-inline',
         // AS3 metadata
-        '-keep-as3-metadata+=Inline,Embed,SWF,Transient',
-        '-debug=false',
-        '-verbose-stacktraces=true'
+        '-keep-as3-metadata+=Inline,Embed,SWF,Transient'
 ]
 
 additionalCompilerOptions = compilerOptions
