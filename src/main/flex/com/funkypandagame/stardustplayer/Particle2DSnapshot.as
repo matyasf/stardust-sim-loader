@@ -22,19 +22,6 @@ public class Particle2DSnapshot {
     public var colorG:Number;
     public var colorB:Number;
 
-    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
-    public var initColorR:Number;
-    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
-    public var initColorG:Number;
-    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
-    public var initColorB:Number;
-    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
-    public var endColorR:Number;
-    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
-    public var endColorG:Number;
-    [Deprecated(message="This property will be soon removed, the new ColorGradient action does not need it.")]
-    public var endColorB:Number;
-
     public var currentAnimationFrame : int;
 
     public function storeParticle(p2d : Particle) : void
@@ -56,12 +43,6 @@ public class Particle2DSnapshot {
         colorR = toLowPrecision(p2d.colorR);
         colorG = toLowPrecision(p2d.colorG);
         colorB = toLowPrecision(p2d.colorB);
-        initColorR = toLowPrecision(p2d.initColorR);
-        initColorG = toLowPrecision(p2d.initColorG);
-        initColorB = toLowPrecision(p2d.initColorB);
-        endColorR = toLowPrecision(p2d.endColorR);
-        endColorG = toLowPrecision(p2d.endColorG);
-        endColorB = toLowPrecision(p2d.endColorB);
         currentAnimationFrame = p2d.currentAnimationFrame;
     }
 
@@ -90,12 +71,6 @@ public class Particle2DSnapshot {
         p2d.colorR = colorR;
         p2d.colorG = colorG;
         p2d.colorB = colorB;
-        p2d.initColorR = initColorR;
-        p2d.initColorG = initColorG;
-        p2d.initColorB = initColorB;
-        p2d.endColorR = endColorR;
-        p2d.endColorG = endColorG;
-        p2d.endColorB = endColorB;
         p2d.currentAnimationFrame = currentAnimationFrame;
     }
 }

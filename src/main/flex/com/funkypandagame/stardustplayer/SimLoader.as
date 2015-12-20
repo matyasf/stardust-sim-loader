@@ -172,6 +172,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
      */
     public function dispose() : void
     {
+        sequenceLoader.clearAllJobs();
         projectLoaded = false;
         descriptorJSON = null;
         if (atlas)
