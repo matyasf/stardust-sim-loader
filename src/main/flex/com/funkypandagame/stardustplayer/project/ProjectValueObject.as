@@ -16,7 +16,7 @@ public class ProjectValueObject
 {
     public var version : Number;
 
-    public const emitters : Dictionary = new Dictionary(); // EmitterValueObject
+    public const emitters : Dictionary = new Dictionary(); //of EmitterValueObject
 
     public function ProjectValueObject( _version : Number )
     {
@@ -61,6 +61,19 @@ public class ProjectValueObject
         {
             emitterValueObject.emitter.reset();
         }
+    }
+
+    public function set fps(val : Number) : void
+    {
+        for each (var emitterValueObject : EmitterValueObject in emitters)
+        {
+            emitterValueObject.emitter.fps = val;
+        }
+    }
+
+    public function get fps() : Number
+    {
+        return emittersArr[0].fps;
     }
 
     /**

@@ -51,7 +51,7 @@ public class SimPlayer
         return _project;
     }
 
-    public function stepSimulation( numSteps : uint = 1) : void
+    public function stepSimulation( deltaTime : Number) : void
     {
         if (_project == null || _renderTarget == null)
         {
@@ -59,7 +59,7 @@ public class SimPlayer
         }
         for each (var emVO : EmitterValueObject in _project.emitters)
         {
-            emVO.emitter.step( numSteps );
+            emVO.emitter.step( deltaTime );
         }
     }
 
