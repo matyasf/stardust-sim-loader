@@ -22,7 +22,7 @@ apply plugin: 'ideafx'
 apply plugin: 'maven'
 
 group = 'com.funkypandagame'
-version = '3.30'
+version = '3.31'
 type = 'swc'
 
 srcDirs	= ['src/main/flex']
@@ -51,7 +51,7 @@ repositories {
 dependencies {
     airSDK group: 'com.adobe', name: 'AIRSDK', version: '20.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tbz2'
 
-    external 'com.funkypandagame:stardust-library:3.26'
+    external 'com.funkypandagame:stardust-library:3.28'
 
     test group: 'org.flexunit', name: 'flexunit-tasks', version: '4.2.0', ext: 'jar'
     test group: 'org.flexunit', name: 'flexunit-as3', version: '4.2.0', ext: 'swc'
@@ -61,7 +61,6 @@ dependencies {
 }
 
 def compilerOptions = [
-//        '-swf-version=31', //FP20
         '-inline',
         // AS3 metadata
         '-keep-as3-metadata+=Inline,Embed,SWF,Transient'
