@@ -1,30 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
-    ext {
-        if (!project.hasProperty('repoManagerURL') ||
-                !project.hasProperty('mavenUsername') ||
-                !project.hasProperty('mavenPassword')) {
-            println("NOTE: custom Maven repository is not configured in gradle.properties")
-            repoManagerURL = "https://repo1.maven.org/maven2"
-            mavenUsername = ""
-            mavenPassword = ""
-        }
-        if (!project.hasProperty('flashPlayerLocation')) {
-            println("NOTE: Flash player path is not configured in gradle.properties, tests will not work.")
-            flashPlayerLocation = ""
-        }
-    }
     repositories {
         mavenLocal()
         mavenCentral()
-        maven {
-            url repoManagerURL + 'repo'
-            credentials {
-                username = mavenUsername
-                password = mavenPassword
-            }
-        }
     }
 
     dependencies {
@@ -50,14 +29,10 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url "https://raw.githubusercontent.com/tconkling/maven-repo/master/"
+        url 'https://raw.githubusercontent.com/vpmedia/mvnrepository/master'
     }
     maven {
-        url repoManagerURL + 'repo'
-        credentials {
-            username = mavenUsername
-            password = mavenPassword
-        }
+        url "https://raw.githubusercontent.com/tconkling/maven-repo/master/"
     }
     ivy {
         name 'Adobe Air SDK'
@@ -72,11 +47,11 @@ dependencies {
 
     external 'com.funkypandagame:stardust-library:3.28'
 
-    test group: 'org.flexunit', name: 'flexunit-tasks', version: '4.2.0', ext: 'jar'
-    test group: 'org.flexunit', name: 'flexunit-as3', version: '4.2.0', ext: 'swc'
-    test group: 'org.flexunit', name: 'flexunit-aircilistener', version: '4.2.0', ext: 'swc'
-    test group: 'org.flexunit', name: 'flexunit-cilistener', version: '4.2.0', ext: 'swc'
-    test group: 'org.flexunit', name: 'flexunit-uilistener', version: '4.2.0', ext: 'swc'
+    test group: 'org.apache', name: 'flexunit-tasks', version: '4.2.0-20140410', ext: 'jar'
+    test group: 'org.apache', name: 'flexunit-as3', version: '4.2.0-20140410', ext: 'swc'
+    test group: 'org.apache', name: 'flexunit-aircilistener', version: '4.2.0-20140410', ext: 'swc'
+    test group: 'org.apache', name: 'flexunit-cilistener', version: '4.2.0-20140410', ext: 'swc'
+    test group: 'org.apache', name: 'flexunit-uilistener', version: '4.2.0-20140410', ext: 'swc'
 }
 
 def compilerOptions = [
@@ -113,8 +88,8 @@ uploadArchives {
         mavenDeployer {
             // invoke this with the -PdeployToRepoManager command line argument
             if (project.hasProperty('deployToRepoManager')) {
-                repository(url: repoManagerURL + 'funkypanda') {
-                    authentication(userName: mavenUsername, password: mavenPassword)
+                repository(url: 'TODO') {
+                    authentication(userName: 'TODO', password: 'TODO')
                 }
             }
             else {
