@@ -10,6 +10,10 @@ buildscript {
             mavenUsername = ""
             mavenPassword = ""
         }
+        if (!project.hasProperty('flashPlayerLocation')) {
+            println("NOTE: Flash player path is not configured in gradle.properties, tests will not work.")
+            flashPlayerLocation = ""
+        }
     }
     repositories {
         mavenLocal()
@@ -97,7 +101,7 @@ flexUnit {
 task wrapper(type: Wrapper) {
     group = 'Buildmaster'
     description = 'Generates gradlew and gradlew.bat bootstrap scripts.'
-    gradleVersion = '4.0'
+    gradleVersion = '3.2.1'
     // place jar file and properties into a subdirectory to avoid root dir clutter
     jarFile = 'gradle/wrapper/gradle.jar'
 }
