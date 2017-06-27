@@ -1,6 +1,12 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
+    ext {
+        if (!project.hasProperty('flashPlayerLocation')) {
+            println("NOTE: Flash player path is not configured in gradle.properties, tests will not work.")
+            flashPlayerLocation = ""
+        }
+    }
     repositories {
         mavenLocal()
         mavenCentral()
