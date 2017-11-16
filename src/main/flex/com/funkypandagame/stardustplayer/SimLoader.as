@@ -91,7 +91,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for (var i : int = 0; i < loadedZip.getFileCount(); i++)
         {
             var loadedFileName : String = loadedZip.getFileAt(i).filename;
-            if (SDEConstants.isEmitterXMLName(loadedFileName))
+            if (SDEConstants.isEmitterFileName(loadedFileName))
             {
                 const emitterId : String = SDEConstants.getEmitterID(loadedFileName);
                 const stardustBA : ByteArray = loadedZip.getFileByName(loadedFileName).content;
@@ -99,7 +99,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
 
                 var rawData : RawEmitterData = new RawEmitterData();
                 rawData.emitterID = emitterId;
-                rawData.emitterXML = new XML(stardustBA.readUTFBytes(stardustBA.length));
+                rawData.emitterJson = stardustBA.readUTFBytes(stardustBA.length);
                 rawData.snapshot = snapshot ? snapshot.content : null;
                 rawEmitterDatas.push(rawData);
             }
@@ -125,7 +125,7 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         var project : ProjectValueObject = new ProjectValueObject(parseFloat(descriptorJSON.version));
         for each(var rawData : RawEmitterData in rawEmitterDatas)
         {
-            var emitter : Emitter = EmitterBuilder.buildEmitter(rawData.emitterXML, rawData.emitterID);
+            var emitter : Emitter = EmitterBuilder.buildEmitter(rawData.emitterJson, rawData.emitterID);
             var emitterVO : EmitterValueObject = new EmitterValueObject(emitter);
             project.emitters[rawData.emitterID] = emitterVO;
             if (rawData.snapshot)
@@ -197,6 +197,6 @@ import flash.utils.ByteArray;
 class RawEmitterData
 {
     public var emitterID : String;
-    public var emitterXML : XML;
+    public var emitterJson : String;
     public var snapshot : ByteArray;
 }

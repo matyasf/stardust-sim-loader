@@ -23,8 +23,8 @@ public class EmitterBuilder
     }
 
     /**
-     * Returns the builder that is used to parse the XML descriptor.
-     * You can use it to register new custom classes from your XML.
+     * Returns the builder that is used to parse the JSON descriptor.
+     * You can use it to register new custom classes from your JSON.
      */
     public static function get builder() : JsonBuilder
     {

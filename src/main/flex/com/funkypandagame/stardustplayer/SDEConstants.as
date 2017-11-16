@@ -17,14 +17,14 @@ public class SDEConstants
         return "emitterSnapshot_" + id + ".bytearray";
     }
 
-    public static function isEmitterXMLName(filename : String) : Boolean
+    public static function isEmitterFileName(filename : String) : Boolean
     {
         return (filename.substr(0,16) == EMITTER_NAME_PREFIX)
     }
 
-    public static function getEmitterID(XMLFilename : String) : String
+    public static function getEmitterID(filename : String) : String
     {
-        return XMLFilename.substr(16).split(".")[0];
+        return filename.substr(16).split(".")[0];
     }
 
     // Returns the prefix for all textures used by emitterId in the atlas.
