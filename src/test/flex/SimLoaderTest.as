@@ -76,14 +76,14 @@ public class SimLoaderTest
         assertEquals( 12, UniformRandom(ImpulseClock(emitter0.emitter.clock).impulseInterval).center );
         assertNotNull( emitter0.emitter );
         assertEquals( 0, emitter0.id );
-        assertEquals( "stardustEmitter_0.xml", SDEConstants.getXMLName(emitter0.id) );
+        assertEquals( "stardustEmitter_0.xml", SDEConstants.getEmitterJsonName(emitter0.id) );
 
         const emitter1 : EmitterValueObject = sim.emitters[1];
         assertEquals( BlendMode.NORMAL, StarlingHandler(emitter1.emitter.particleHandler).blendMode );
 	    assertTrue( emitter1.emitter.clock is SteadyClock );
         assertNotNull( emitter1.emitter );
         assertEquals( 1, emitter1.id );
-        assertEquals( "stardustEmitter_1.xml", SDEConstants.getXMLName(emitter1.id) );
+        assertEquals( "stardustEmitter_1.xml", SDEConstants.getEmitterJsonName(emitter1.id) );
     }
 
     [Test(async)]

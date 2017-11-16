@@ -7,9 +7,9 @@ public class SDEConstants
     public static const ATLAS_IMAGE_NAME : String = "atlas_0.png";
     public static const ATLAS_XML_NAME : String = "atlas_0.xml";
 
-    public static function getXMLName(id : String) : String
+    public static function getEmitterJsonName(id : String) : String
     {
-        return EMITTER_NAME_PREFIX + id + ".xml";
+        return EMITTER_NAME_PREFIX + id + ".json";
     }
 
     public static function getParticleSnapshotName(id : String) : String

@@ -3,21 +3,21 @@ package com.funkypandagame.stardustplayer.emitter
 
 import idv.cjcat.stardustextended.CommonClassPackage;
 import idv.cjcat.stardustextended.emitters.Emitter;
-
-import idv.cjcat.stardustextended.xml.XMLBuilder;
+import idv.cjcat.stardustextended.json.JsonBuilder;
 
 import idv.cjcat.stardustextended.handlers.starling.StarlingHandler;
 
 public class EmitterBuilder
 {
 
-    private static var _builder : XMLBuilder;
+    private static var _builder : JsonBuilder;
 
-    public static function buildEmitter(sourceXML : XML, uniqueEmitterId : String) : Emitter
+    public static function buildEmitter(sourceJson : String, uniqueEmitterId : String) : Emitter
     {
         createBuilderIfNeeded();
-        _builder.buildFromXML( sourceXML );
-        var emitter : Emitter = (_builder.getElementsByClass(Emitter))[0] as Emitter;
+
+        var emitter : Emitter = _builder.buildFromJson(sourceJson);
+
         emitter.name = uniqueEmitterId;
         return emitter;
     }
@@ -26,7 +26,7 @@ public class EmitterBuilder
      * Returns the builder that is used to parse the XML descriptor.
      * You can use it to register new custom classes from your XML.
      */
-    public static function get builder() : XMLBuilder
+    public static function get builder() : JsonBuilder
     {
         createBuilderIfNeeded();
         return _builder;
@@ -36,7 +36,7 @@ public class EmitterBuilder
     {
         if ( _builder == null)
         {
-            _builder = new XMLBuilder();
+            _builder = new JsonBuilder();
             _builder.registerClassesFromClassPackage( CommonClassPackage.getInstance() );
             _builder.registerClass( StarlingHandler );
         }

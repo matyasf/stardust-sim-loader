@@ -126,7 +126,6 @@ public class SimLoader extends EventDispatcher implements ISimLoader
         for each(var rawData : RawEmitterData in rawEmitterDatas)
         {
             var emitter : Emitter = EmitterBuilder.buildEmitter(rawData.emitterXML, rawData.emitterID);
-            emitter.name = rawData.emitterID;
             var emitterVO : EmitterValueObject = new EmitterValueObject(emitter);
             project.emitters[rawData.emitterID] = emitterVO;
             if (rawData.snapshot)
