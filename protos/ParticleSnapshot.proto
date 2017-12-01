@@ -1,24 +1,26 @@
+syntax = "proto3";
+
 package stardustProtos;
 
 message ParticleSnapshot {
-
-    required float x = 1;
-    required float y = 2;
-    required float vx = 3;
-    required float vy = 4;
-    required float rotation = 5;
-    required float omega = 6;
-    required float initLife = 7;
-    required float initScale = 8;
-    required float initAlpha = 9;
-    required float life = 10;
-    required float scale = 11;
-    required float alpha = 12;
-    required float mass = 13;
-    required bool isDead = 14;
-    required float colorR = 15;
-    required float colorG = 16;
-    required float colorB = 17;
+    float x = 1;
+    float y = 2;
+    float vx = 3;
+    float vy = 4;
+    float rotation = 5;
+    float omega = 6;
+    float initLife = 7;
+    float initScale = 8;
+    float initAlpha = 9;
+    float life = 10;
+    float scale = 11;
+    float alpha = 12;
+    float mass = 13;
+    bool isDead = 14;
+    float colorR = 15;
+    float colorG = 16;
+    float colorB = 17;
+    int32 currentAnimationFrame = 18;
 }
 
 message ParticleSnapshots {
